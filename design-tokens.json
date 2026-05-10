@@ -1,0 +1,223 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "meta": {
+    "name": "Xenon Grid Design System",
+    "description": "Alien command-grid dashboard for Jacky's project mission control. Sci-fi / deep-space aesthetic: void-black canvas, neon-cyan glow accents, clipped-corner angular panels, Space Mono technical labels, Orbitron headings.",
+    "version": "1.0.0"
+  },
+
+  "color": {
+    "$type": "color",
+
+    "void-black":      { "$value": "#020810", "$description": "Page canvas, deepest background. The void." },
+    "deep-space":      { "$value": "#071122", "$description": "Primary panel background, project card bodies." },
+    "nebula-navy":     { "$value": "#0c1f3f", "$description": "Elevated panels, hover surfaces, secondary containers." },
+    "stellar-border":  { "$value": "#0a2a4a", "$description": "Panel borders, dividers, grid lines." },
+    "phantom-grey":    { "$value": "#1e3a5f", "$description": "Inactive rules, muted borders, disabled states." },
+    "signal-dim":      { "$value": "#4a6785", "$description": "Muted text, inactive icons, stale indicators." },
+
+    "cyber-blue":      { "$value": "#00b4d8", "$description": "Primary accent, active links, selected filters." },
+    "neon-cyan":       { "$value": "#00f5ff", "$description": "Glow effects, critical live indicators, scan pulse." },
+    "ice-blue":        { "$value": "#93c5fd", "$description": "Secondary text, metadata, timestamps, labels." },
+
+    "plasma-purple":   { "$value": "#7c3aed", "$description": "Alien/anomalous states, special tags, mystic accents." },
+    "hologram-violet": { "$value": "#a855f7", "$description": "Secondary alien accent, gradient partner to purple." },
+
+    "bio-green":       { "$value": "#00ff88", "$description": "LIVE status, healthy builds, successful deployments." },
+    "star-white":      { "$value": "#e8f4ff", "$description": "Primary text on dark panels, key data values." },
+
+    "alert-red":       { "$value": "#ff1f4e", "$description": "Critical failure, blocked status, destructive confirmation only." },
+    "plasma-orange":   { "$value": "#ff6d00", "$description": "Warning states, degraded performance, caution signals." }
+  },
+
+  "gradient": {
+    "$type": "color",
+    "singularity":    { "$value": "linear-gradient(135deg, #020810 0%, #071122 40%, #0c1f3f 100%)", "$description": "Deep-space panel backdrop." },
+    "warp":           { "$value": "linear-gradient(135deg, #00b4d8 0%, #7c3aed 50%, #00f5ff 100%)", "$description": "Featured project highlight strip." },
+    "anomaly":        { "$value": "linear-gradient(135deg, #ff1f4e 0%, #7c3aed 60%, #ff6d00 100%)", "$description": "Critical failure or destructive confirmation surface." },
+    "bioluminescent": { "$value": "linear-gradient(180deg, #00ff88 0%, #00b4d8 100%)", "$description": "Live/healthy state glow bar." }
+  },
+
+  "shadow": {
+    "glow-cyan":   { "$value": "0 0 8px rgba(0,245,255,0.6), 0 0 20px rgba(0,180,216,0.3)", "$description": "Neon cyan glow — active borders, live indicators." },
+    "glow-blue":   { "$value": "0 0 8px rgba(0,180,216,0.5), 0 0 24px rgba(0,120,200,0.2)", "$description": "Cyber blue glow — hover states, selected items." },
+    "glow-green":  { "$value": "0 0 8px rgba(0,255,136,0.6), 0 0 20px rgba(0,200,100,0.2)", "$description": "Bio green glow — LIVE status indicators." },
+    "glow-purple": { "$value": "0 0 8px rgba(124,58,237,0.6), 0 0 24px rgba(168,85,247,0.2)", "$description": "Plasma purple glow — alien/anomalous states." },
+    "glow-red":    { "$value": "0 0 8px rgba(255,31,78,0.7), 0 0 20px rgba(255,31,78,0.3)", "$description": "Alert red glow — critical failure, destructive action." },
+    "panel":       { "$value": "0 4px 24px rgba(0,0,0,0.8), 0 1px 0 rgba(0,245,255,0.05)", "$description": "Standard panel drop shadow with faint cyan rim." }
+  },
+
+  "font-family": {
+    "orbitron":   { "$value": "'Orbitron', ui-sans-serif, system-ui", "$description": "Primary UI — headings, project names, buttons. Sci-fi engineered character." },
+    "space-mono": { "$value": "'Space Mono', ui-monospace, monospace", "$description": "Technical readout — IDs, timestamps, hashes, status codes." },
+    "rajdhani":   { "$value": "'Rajdhani', ui-sans-serif, system-ui", "$description": "Secondary body — summaries, activity, supporting text." },
+    "doto":       { "$value": "'Doto', 'Orbitron', 'Press Start 2P', ui-monospace", "$description": "Digital display — large numeric readouts only." }
+  },
+
+  "font-weight": {
+    "regular":    { "$value": 400 },
+    "medium":     { "$value": 500 },
+    "semibold":   { "$value": 600 },
+    "bold":       { "$value": 700 },
+    "black":      { "$value": 900 }
+  },
+
+  "font-size": {
+    "caption":    { "$value": "10px", "$description": "Dense status chips, env badges, tiny hex labels." },
+    "mono-label": { "$value": "11px", "$description": "Repo IDs, build hashes, timestamps, env codes." },
+    "body":       { "$value": "14px", "$description": "Project summaries, activity log entries." },
+    "subheading": { "$value": "18px", "$description": "Card headings, metric group labels." },
+    "heading":    { "$value": "36px", "$description": "Dashboard section headings." },
+    "heading-lg": { "$value": "48px", "$description": "Primary dashboard identity." },
+    "display":    { "$value": "106px", "$description": "Large quantum readout modules." }
+  },
+
+  "line-height": {
+    "caption":    { "$value": 0.8 },
+    "body":       { "$value": 1.5 },
+    "subheading": { "$value": 1.25 },
+    "heading":    { "$value": 1.1 },
+    "display":    { "$value": 1.0 }
+  },
+
+  "spacing": {
+    "unit": { "$value": "4px" },
+    "4":    { "$value": "4px" },
+    "8":    { "$value": "8px" },
+    "12":   { "$value": "12px" },
+    "16":   { "$value": "16px" },
+    "20":   { "$value": "20px" },
+    "24":   { "$value": "24px" },
+    "32":   { "$value": "32px" },
+    "48":   { "$value": "48px" },
+    "56":   { "$value": "56px" },
+    "64":   { "$value": "64px" },
+    "80":   { "$value": "80px" }
+  },
+
+  "border-radius": {
+    "default": { "$value": "2px", "$description": "Nearly square — angular, technical." },
+    "tag":     { "$value": "4px", "$description": "Filter tags, minor chips." },
+    "pill":    { "$value": "9999px", "$description": "Rare — only circular display modules." }
+  },
+
+  "component": {
+    "project-card": {
+      "background":    { "$value": "{color.deep-space}" },
+      "border":        { "$value": "1px solid {color.stellar-border}" },
+      "border-hover":  { "$value": "1px solid {color.cyber-blue}" },
+      "shadow-hover":  { "$value": "{shadow.glow-cyan}" },
+      "padding":       { "$value": "{spacing.12}" },
+      "clip-path":     { "$value": "polygon(8px 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%, 0% 8px)" },
+      "title-font":    { "$value": "{font-family.orbitron}" },
+      "title-color":   { "$value": "{color.star-white}" },
+      "meta-font":     { "$value": "{font-family.space-mono}" },
+      "meta-color":    { "$value": "{color.ice-blue}" }
+    },
+    "command-strip": {
+      "background":    { "$value": "{color.void-black}" },
+      "border-bottom": { "$value": "1px solid {color.cyber-blue}" },
+      "title-font":    { "$value": "{font-family.orbitron}" },
+      "meta-font":     { "$value": "{font-family.space-mono}" }
+    },
+    "telemetry-log": {
+      "background":    { "$value": "{color.deep-space}" },
+      "border-top":    { "$value": "1px solid {color.cyber-blue}" },
+      "font":          { "$value": "{font-family.space-mono}" },
+      "color-pass":    { "$value": "{color.bio-green}" },
+      "color-fail":    { "$value": "{color.alert-red}" },
+      "color-warn":    { "$value": "{color.plasma-orange}" },
+      "color-default": { "$value": "{color.ice-blue}" }
+    },
+    "filter-chip": {
+      "background-inactive": { "$value": "{color.nebula-navy}" },
+      "background-active":   { "$value": "{color.deep-space}" },
+      "border-inactive":     { "$value": "1px solid {color.stellar-border}" },
+      "border-active":       { "$value": "1px solid {color.cyber-blue}" },
+      "shadow-active":       { "$value": "{shadow.glow-cyan}" },
+      "font":                { "$value": "{font-family.orbitron}" },
+      "color-inactive":      { "$value": "{color.ice-blue}" },
+      "color-active":        { "$value": "{color.star-white}" }
+    },
+    "critical-button": {
+      "background":    { "$value": "{color.alert-red}" },
+      "color":         { "$value": "{color.star-white}" },
+      "font":          { "$value": "{font-family.orbitron}" },
+      "shadow-hover":  { "$value": "{shadow.glow-red}" },
+      "clip-path":     { "$value": "polygon(6px 0%, 100% 0%, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0% 100%, 0% 6px)" }
+    },
+    "ghost-button": {
+      "background":    { "$value": "transparent" },
+      "border":        { "$value": "1px solid {color.stellar-border}" },
+      "border-hover":  { "$value": "1px solid {color.cyber-blue}" },
+      "shadow-hover":  { "$value": "{shadow.glow-blue}" },
+      "font":          { "$value": "{font-family.orbitron}" },
+      "color":         { "$value": "{color.ice-blue}" }
+    },
+    "quantum-readout": {
+      "background":    { "$value": "{color.deep-space}" },
+      "border":        { "$value": "1px solid {color.cyber-blue}" },
+      "shadow":        { "$value": "{shadow.glow-cyan}" },
+      "number-font":   { "$value": "{font-family.doto}" },
+      "number-color":  { "$value": "{color.neon-cyan}" },
+      "label-font":    { "$value": "{font-family.space-mono}" },
+      "label-color":   { "$value": "{color.ice-blue}" }
+    }
+  },
+
+  "status": {
+    "live": {
+      "label":       { "$value": "LIVE" },
+      "color":       { "$value": "{color.star-white}" },
+      "dot":         { "$value": "{color.bio-green}" },
+      "glow":        { "$value": "{shadow.glow-green}" },
+      "animation":   { "$value": "xenon-pulse 2s ease-in-out infinite" }
+    },
+    "building": {
+      "label":       { "$value": "BUILDING" },
+      "color":       { "$value": "{color.cyber-blue}" },
+      "dot":         { "$value": "{color.cyber-blue}" },
+      "glow":        { "$value": "{shadow.glow-blue}" },
+      "animation":   { "$value": "xenon-pulse 1.5s ease-in-out infinite" }
+    },
+    "review": {
+      "label":       { "$value": "REVIEW" },
+      "color":       { "$value": "{color.ice-blue}" },
+      "dot":         { "$value": "{color.hologram-violet}" },
+      "glow":        { "$value": "{shadow.glow-purple}" }
+    },
+    "blocked": {
+      "label":       { "$value": "BLOCKED" },
+      "color":       { "$value": "{color.alert-red}" },
+      "dot":         { "$value": "{color.alert-red}" },
+      "glow":        { "$value": "{shadow.glow-red}" }
+    },
+    "stale": {
+      "label":       { "$value": "STALE" },
+      "color":       { "$value": "{color.signal-dim}" },
+      "dot":         { "$value": "{color.phantom-grey}" },
+      "glow":        { "$value": "none" }
+    },
+    "archived": {
+      "label":       { "$value": "ARCHIVED" },
+      "color":       { "$value": "{color.phantom-grey}" },
+      "dot":         { "$value": "none" },
+      "glow":        { "$value": "none" }
+    }
+  },
+
+  "animation": {
+    "xenon-pulse": {
+      "$value": "0%,100%{opacity:1;box-shadow:0 0 4px currentColor} 50%{opacity:.5;box-shadow:0 0 12px currentColor}",
+      "$description": "Slow pulse for LIVE and BUILDING status dots."
+    },
+    "data-flicker": {
+      "$value": "0%,92%{opacity:1} 93%{opacity:.4} 94%{opacity:1} 97%{opacity:.7} 100%{opacity:1}",
+      "$description": "Subtle data-stream flicker on refresh events."
+    },
+    "duration-fast":   { "$value": "120ms" },
+    "duration-normal": { "$value": "200ms" },
+    "duration-glow":   { "$value": "150ms" },
+    "easing-linear":   { "$value": "linear" }
+  }
+}
