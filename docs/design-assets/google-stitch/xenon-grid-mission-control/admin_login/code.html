@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>XENON GRID | TERMINAL ACCESS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&amp;family=Space+Mono:wght@400;700&amp;family=Rajdhani:wght@300;400;500;600;700&amp;family=Doto:wght@900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .clip-card {
+            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+        }
+        .clip-button {
+            clip-path: polygon(0% 0%, 90% 0%, 100% 30%, 100% 100%, 10% 100%, 0% 70%);
+        }
+        .scanline-overlay {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 180, 216, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.4);
+        }
+        .glow-blue {
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+        }
+        .glow-red {
+            box-shadow: 0 0 20px rgba(255, 31, 78, 0.6);
+        }
+        .hex-grid {
+            background-image: radial-gradient(circle, #0a2a4a 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "deep-space": "#071122",
+                    "on-secondary-container": "#006c71",
+                    "on-primary-container": "#00414f",
+                    "background": "#0e1416",
+                    "on-surface-variant": "#bcc9ce",
+                    "cyber-blue": "#00b4d8",
+                    "secondary": "#e6feff",
+                    "alert-red": "#ff1f4e",
+                    "ice-blue": "#93c5fd",
+                    "stellar-border": "#0a2a4a",
+                    "nebula-navy": "#0c1f3f",
+                    "on-primary": "#003642",
+                    "on-surface": "#dee3e6",
+                    "bio-green": "#00ff88",
+                    "plasma-purple": "#7c3aed",
+                    "on-tertiary": "#4d2600",
+                    "hologram-violet": "#a855f7",
+                    "primary": "#4cd6fb",
+                    "surface-container": "#1b2023",
+                    "on-secondary-fixed-variant": "#004f53",
+                    "gradient-bioluminescent": "linear-gradient(180deg, #00ff88 0%, #00b4d8 100%)",
+                    "tertiary-container": "#eb8f3b",
+                    "on-primary-fixed-variant": "#004e5f",
+                    "surface-bright": "#343a3c",
+                    "on-error": "#690005",
+                    "tertiary": "#ffb77d",
+                    "tertiary-fixed-dim": "#ffb77d",
+                    "surface-tint": "#4cd6fb",
+                    "on-tertiary-fixed": "#2f1500",
+                    "outline": "#869398",
+                    "secondary-container": "#00f4fe",
+                    "tertiary-fixed": "#ffdcc3",
+                    "plasma-orange": "#ff6d00",
+                    "signal-dim": "#4a6785",
+                    "surface-container-low": "#171c1f",
+                    "inverse-primary": "#00677d",
+                    "gradient-singularity": "linear-gradient(135deg, #020810 0%, #071122 40%, #0c1f3f 100%)",
+                    "on-secondary-fixed": "#002021",
+                    "on-tertiary-container": "#5d2f00",
+                    "primary-container": "#00b4d8",
+                    "secondary-fixed": "#63f7ff",
+                    "surface-container-high": "#252b2d",
+                    "star-white": "#e8f4ff",
+                    "neon-cyan": "#00f5ff",
+                    "inverse-on-surface": "#2b3134",
+                    "on-secondary": "#003739",
+                    "void-black": "#020810",
+                    "inverse-surface": "#dee3e6",
+                    "surface-container-lowest": "#090f11",
+                    "outline-variant": "#3d494d",
+                    "on-primary-fixed": "#001f27",
+                    "error-container": "#93000a",
+                    "error": "#ffb4ab",
+                    "gradient-anomaly": "linear-gradient(135deg, #ff1f4e 0%, #7c3aed 60%, #ff6d00 100%)",
+                    "surface-variant": "#303638",
+                    "on-error-container": "#ffdad6",
+                    "on-background": "#dee3e6",
+                    "phantom-grey": "#1e3a5f",
+                    "on-tertiary-fixed-variant": "#6e3900",
+                    "primary-fixed": "#b3ebff",
+                    "surface": "#0e1416",
+                    "primary-fixed-dim": "#4cd6fb",
+                    "gradient-warp": "linear-gradient(135deg, #00b4d8 0%, #7c3aed 50%, #00f5ff 100%)",
+                    "secondary-fixed-dim": "#00dce5",
+                    "surface-container-highest": "#303638",
+                    "surface-dim": "#0e1416"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "32px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "grid-gutter": "12px",
+                    "xl": "64px",
+                    "md": "16px",
+                    "base": "4px",
+                    "grid-margin": "20px"
+            },
+            "fontFamily": {
+                    "heading": [
+                            "Orbitron"
+                    ],
+                    "heading-lg": [
+                            "Orbitron"
+                    ],
+                    "subheading": [
+                            "Orbitron"
+                    ],
+                    "mono-label": [
+                            "Space Mono"
+                    ],
+                    "caption": [
+                            "Space Mono"
+                    ],
+                    "body": [
+                            "Rajdhani"
+                    ],
+                    "display-quantum": [
+                            "Doto"
+                    ]
+            },
+            "fontSize": {
+                    "heading": [
+                            "36px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "heading-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "fontWeight": "900"
+                            }
+                    ],
+                    "subheading": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.25",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "mono-label": [
+                            "11px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "caption": [
+                            "10px",
+                            {
+                                    "lineHeight": "0.8",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-quantum": [
+                            "106px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "fontWeight": "900"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+</head>
+<body class="bg-void-black text-on-background font-body min-h-screen overflow-hidden selection:bg-neon-cyan selection:text-void-black">
+<!-- Global Background Elements -->
+<div class="fixed inset-0 hex-grid opacity-10 z-0"></div>
+<div class="fixed inset-0 bg-gradient-to-b from-void-black via-transparent to-void-black z-0 pointer-events-none"></div>
+<!-- Top Navigation Anchor (Manual construction based on JSON structure) -->
+<header class="flex justify-between items-center w-full px-grid-margin h-16 sticky top-0 z-50 bg-void-black border-b border-cyber-blue/30 shadow-[0_0_15px_rgba(0,180,216,0.2)]">
+<div class="font-heading-lg text-heading-lg font-black text-star-white tracking-widest">
+            XENON GRID
+        </div>
+<div class="hidden md:flex gap-lg items-center">
+<!-- Active state determined as none since this is a login screen -->
+<span class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150 cursor-not-allowed">MISSIONS</span>
+<span class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150 cursor-not-allowed">DRIVES</span>
+<span class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150 cursor-not-allowed">SYSTEMS</span>
+<span class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150 cursor-not-allowed">NODES</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-cyber-blue" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-cyber-blue" data-icon="settings_input_component">settings_input_component</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-grid-margin">
+<!-- Central Angular Login Panel -->
+<div class="w-full max-w-md relative group">
+<!-- Panel Glow Background -->
+<div class="absolute -inset-1 bg-cyber-blue opacity-10 blur-xl group-hover:opacity-20 transition duration-1000"></div>
+<div class="relative bg-deep-space border border-stellar-border clip-card p-lg shadow-2xl overflow-hidden">
+<!-- Scanline Overlay -->
+<div class="scanline-overlay absolute inset-0 z-20"></div>
+<!-- Header Identity -->
+<div class="mb-lg border-l-4 border-bio-green pl-md">
+<h1 class="font-heading text-heading text-star-white uppercase tracking-tighter">
+                        Terminal <span class="text-cyber-blue">Access</span>
+</h1>
+<p class="font-mono-label text-mono-label text-on-surface-variant mt-xs">
+                        SECURE NODE :: XENON-77-DELTA
+                    </p>
+</div>
+<!-- Login Form -->
+<form class="space-y-grid-gutter relative z-30" onsubmit="return false">
+<!-- Email Field -->
+<div class="space-y-xs">
+<label class="font-mono-label text-caption text-ice-blue block tracking-widest uppercase">
+                            Operator Identifier
+                        </label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-cyber-blue text-lg" data-icon="alternate_email">alternate_email</span>
+<input class="w-full bg-void-black border border-stellar-border focus:border-neon-cyan focus:ring-0 text-star-white font-mono-label pl-12 pr-md py-md clip-card outline-none transition-all duration-200" placeholder="operator@xenon-grid.io" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-xs">
+<label class="font-mono-label text-caption text-ice-blue block tracking-widest uppercase">
+                            Coded Keyphrase
+                        </label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-cyber-blue text-lg" data-icon="vpn_key">vpn_key</span>
+<input class="w-full bg-void-black border border-stellar-border focus:border-neon-cyan focus:ring-0 text-star-white font-mono-label pl-12 pr-md py-md clip-card outline-none transition-all duration-200" placeholder="••••••••••••" type="password"/>
+</div>
+</div>
+<!-- Options -->
+<div class="flex justify-between items-center font-mono-label text-caption">
+<label class="flex items-center gap-xs cursor-pointer group">
+<input class="rounded-none bg-void-black border-stellar-border text-bio-green focus:ring-0 w-3 h-3" type="checkbox"/>
+<span class="text-on-surface-variant group-hover:text-bio-green transition-colors">PERSIST SESSION</span>
+</label>
+<a class="text-hologram-violet hover:text-ice-blue transition-colors" href="#">FORGOT CREDENTIALS?</a>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-alert-red py-lg font-heading text-subheading text-void-black clip-button hover:bg-neon-cyan hover:glow-blue active:scale-95 transition-all duration-200 mt-md">
+                        LOGIN
+                    </button>
+</form>
+<!-- Footer Telemetry -->
+<div class="mt-xl flex justify-between items-center border-t border-stellar-border pt-md relative z-30">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-bio-green animate-pulse shadow-[0_0_8px_#00ff88]"></div>
+<span class="font-mono-label text-caption text-bio-green">UPLINK ACTIVE</span>
+</div>
+<span class="font-mono-label text-caption text-on-surface-variant opacity-50">v4.0.2-STABLE</span>
+</div>
+</div>
+</div>
+<!-- Ambient Decoration -->
+<div class="mt-xl flex gap-lg opacity-40">
+<div class="flex flex-col items-center">
+<span class="font-display-quantum text-heading text-cyber-blue">07</span>
+<span class="font-mono-label text-caption text-ice-blue">SEC_LVL</span>
+</div>
+<div class="w-px h-12 bg-stellar-border"></div>
+<div class="flex flex-col items-center">
+<span class="font-display-quantum text-heading text-hologram-violet">AA</span>
+<span class="font-mono-label text-caption text-ice-blue">NODE_ID</span>
+</div>
+<div class="w-px h-12 bg-stellar-border"></div>
+<div class="flex flex-col items-center">
+<span class="font-display-quantum text-heading text-bio-green">99</span>
+<span class="font-mono-label text-caption text-ice-blue">SYNC_RT</span>
+</div>
+</div>
+</main>
+<!-- Bottom Background Gradient -->
+<div class="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-nebula-navy/20 to-transparent pointer-events-none z-0"></div>
+<!-- Hidden Screen Texture -->
+<div class="fixed inset-0 z-[60] pointer-events-none opacity-5 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+</body></html>

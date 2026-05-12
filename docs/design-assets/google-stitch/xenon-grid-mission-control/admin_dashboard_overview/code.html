@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>XENON GRID | Admin Console</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&amp;family=Space+Mono:wght@400;700&amp;family=Rajdhani:wght@400;500;600;700&amp;family=Doto:wght@900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes pulse-slow { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes flicker { 0% { opacity: 0.9; } 5% { opacity: 0.8; } 10% { opacity: 1; } 15% { opacity: 0.85; } 25% { opacity: 1; } 100% { opacity: 1; } }
+        .pulse-animation { animation: pulse-slow 2s infinite ease-in-out; }
+        .flicker-animation { animation: flicker 3s infinite linear; }
+        .clip-card { clip-path: polygon(0% 0%, 95% 0%, 100% 15%, 100% 100%, 5% 100%, 0% 85%); }
+        .clip-button { clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%); }
+        .glow-cyan { box-shadow: 0 0 10px rgba(0, 245, 255, 0.4); }
+        .glow-blue { box-shadow: 0 0 15px rgba(0, 180, 216, 0.3); }
+        .glow-red { box-shadow: 0 0 12px rgba(255, 31, 78, 0.5); }
+        .scanline { background: linear-gradient(to bottom, transparent 50%, rgba(0, 180, 216, 0.03) 50%); background-size: 100% 4px; pointer-events: none; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #020810; }
+        ::-webkit-scrollbar-thumb { background: #0a2a4a; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00b4d8; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "deep-space": "#071122",
+                        "on-secondary-container": "#006c71",
+                        "on-primary-container": "#00414f",
+                        "background": "#0e1416",
+                        "on-surface-variant": "#bcc9ce",
+                        "cyber-blue": "#00b4d8",
+                        "secondary": "#e6feff",
+                        "alert-red": "#ff1f4e",
+                        "ice-blue": "#93c5fd",
+                        "stellar-border": "#0a2a4a",
+                        "nebula-navy": "#0c1f3f",
+                        "on-primary": "#003642",
+                        "on-surface": "#dee3e6",
+                        "bio-green": "#00ff88",
+                        "plasma-purple": "#7c3aed",
+                        "on-tertiary": "#4d2600",
+                        "hologram-violet": "#a855f7",
+                        "primary": "#4cd6fb",
+                        "surface-container": "#1b2023",
+                        "on-secondary-fixed-variant": "#004f53",
+                        "on-primary-fixed-variant": "#004e5f",
+                        "surface-bright": "#343a3c",
+                        "on-error": "#690005",
+                        "tertiary": "#ffb77d",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "surface-tint": "#4cd6fb",
+                        "on-tertiary-fixed": "#2f1500",
+                        "outline": "#869398",
+                        "secondary-container": "#00f4fe",
+                        "tertiary-fixed": "#ffdcc3",
+                        "plasma-orange": "#ff6d00",
+                        "signal-dim": "#4a6785",
+                        "surface-container-low": "#171c1f",
+                        "inverse-primary": "#00677d",
+                        "gradient-bioluminescent": "linear-gradient(180deg, #00ff88 0%, #00b4d8 100%)",
+                        "tertiary-container": "#eb8f3b",
+                        "on-secondary-fixed": "#002021",
+                        "on-tertiary-container": "#5d2f00",
+                        "primary-container": "#00b4d8",
+                        "secondary-fixed": "#63f7ff",
+                        "surface-container-high": "#252b2d",
+                        "star-white": "#e8f4ff",
+                        "neon-cyan": "#00f5ff",
+                        "inverse-on-surface": "#2b3134",
+                        "on-secondary": "#003739",
+                        "void-black": "#020810",
+                        "inverse-surface": "#dee3e6",
+                        "surface-container-lowest": "#090f11",
+                        "outline-variant": "#3d494d",
+                        "on-primary-fixed": "#001f27",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "gradient-anomaly": "linear-gradient(135deg, #ff1f4e 0%, #7c3aed 60%, #ff6d00 100%)",
+                        "surface-variant": "#303638",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#dee3e6",
+                        "phantom-grey": "#1e3a5f",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "primary-fixed": "#b3ebff",
+                        "surface": "#0e1416",
+                        "primary-fixed-dim": "#4cd6fb",
+                        "gradient-warp": "linear-gradient(135deg, #00b4d8 0%, #7c3aed 50%, #00f5ff 100%)",
+                        "secondary-fixed-dim": "#00dce5",
+                        "surface-container-highest": "#303638",
+                        "surface-dim": "#0e1416"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "32px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "grid-gutter": "12px",
+                        "xl": "64px",
+                        "md": "16px",
+                        "base": "4px",
+                        "grid-margin": "20px"
+                    },
+                    "fontFamily": {
+                        "heading": ["Orbitron"],
+                        "heading-lg": ["Orbitron"],
+                        "subheading": ["Orbitron"],
+                        "mono-label": ["Space Mono"],
+                        "caption": ["Space Mono"],
+                        "body": ["Rajdhani"],
+                        "display-quantum": ["Doto"]
+                    },
+                    "fontSize": {
+                        "heading": ["36px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                        "heading-lg": ["48px", {"lineHeight": "1.0", "fontWeight": "900"}],
+                        "subheading": ["18px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                        "mono-label": ["11px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "caption": ["10px", {"lineHeight": "0.8", "fontWeight": "700"}],
+                        "body": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-quantum": ["106px", {"lineHeight": "1.0", "fontWeight": "900"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void-black text-on-surface font-body overflow-x-hidden">
+<div class="fixed inset-0 scanline z-50 pointer-events-none opacity-20"></div>
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-grid-margin h-16 sticky top-0 z-50 bg-void-black border-b border-cyber-blue/30 shadow-[0_0_15px_rgba(0,180,216,0.2)] flicker-animation">
+<div class="flex items-center gap-md">
+<span class="font-heading-lg text-heading-lg font-black text-star-white tracking-widest uppercase">XENON GRID</span>
+</div>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="font-mono-label text-mono-label text-neon-cyan border-b-2 border-neon-cyan pb-1 hover:text-neon-cyan transition-colors duration-150" href="#">MISSIONS</a>
+<a class="font-mono-label text-mono-label text-on-surface-variant hover:text-neon-cyan transition-colors duration-150" href="#">DRIVES</a>
+<a class="font-mono-label text-mono-label text-on-surface-variant hover:text-neon-cyan transition-colors duration-150" href="#">SYSTEMS</a>
+<a class="font-mono-label text-mono-label text-on-surface-variant hover:text-neon-cyan transition-colors duration-150" href="#">NODES</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="text-cyber-blue hover:text-neon-cyan transition-colors">
+<span class="material-symbols-outlined">notifications_active</span>
+</button>
+<button class="text-cyber-blue hover:text-neon-cyan transition-colors">
+<span class="material-symbols-outlined">settings_input_component</span>
+</button>
+<div class="w-8 h-8 rounded-full border border-cyber-blue/50 overflow-hidden">
+<img alt="Operator Avatar" class="w-full h-full object-cover" data-alt="A futuristic cybernetic profile avatar of a tech operator wearing glowing neon visors and data-streaming armor. The aesthetic is dark and technical with deep-space blue and neon-cyan bioluminescent lighting, shot in a high-contrast cinematic sci-fi style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhTNc_9DNKoBC35eypMv5ldEH7g07mkp2QLafaalBDIzp8AP__SHOuw0qFtahe0LTHdw_MLPEDsmnh5V_pOWgrqN38bEHVb9EPyswiAhVQAuNjfBPU0vHK3tU8AcLOtwEgFuizeBiotGx6tL-vV-4NPdZrLqpzQN1Z49igPJ-xpivR_kDZzUCIGEfufBv0864fLwQrIBibQ3DCuEHtAVeik3FDjebRtkuGE4kXkEzAXjQh65gl3k8mUkK14-LBo3wz2o7NR5LK9ye1"/>
+</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)]">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-full py-md bg-deep-space w-64 border-r border-stellar-border shadow-[5px_0_15px_rgba(0,0,0,0.5)]">
+<div class="px-md pb-lg border-b border-stellar-border/50 mb-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded-sm bg-nebula-navy flex items-center justify-center">
+<span class="material-symbols-outlined text-ice-blue text-sm" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<div class="font-heading text-subheading text-ice-blue uppercase">STATUS RAIL</div>
+<div class="font-mono-label text-[9px] text-phantom-grey tracking-tighter uppercase">SECTOR 7-G</div>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-xs">
+<a class="group flex items-center px-md py-sm font-mono-label text-mono-label bg-nebula-navy text-bio-green border-l-4 border-bio-green hover:glow-blue hover:text-star-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-md">sensors</span> OPERATIONAL
+                </a>
+<a class="group flex items-center px-md py-sm font-mono-label text-mono-label text-on-surface-variant hover:bg-surface-variant hover:glow-blue hover:text-star-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-md">sync_alt</span> SYNCING
+                </a>
+<a class="group flex items-center px-md py-sm font-mono-label text-mono-label text-on-surface-variant hover:bg-surface-variant hover:glow-blue hover:text-star-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-md">layers</span> STAGED
+                </a>
+<a class="group flex items-center px-md py-sm font-mono-label text-mono-label text-on-surface-variant hover:bg-surface-variant hover:glow-blue hover:text-star-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-md">lock</span> LOCKED
+                </a>
+<a class="group flex items-center px-md py-sm font-mono-label text-mono-label text-on-surface-variant hover:bg-surface-variant hover:glow-blue hover:text-star-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-md">dangerous</span> TERMINATED
+                </a>
+</div>
+<div class="px-md mt-lg">
+<button class="w-full py-md clip-button bg-cyber-blue text-void-black font-heading text-xs tracking-widest font-black hover:bg-neon-cyan transition-colors">
+                    NEW MISSION
+                </button>
+</div>
+<div class="mt-auto border-t border-stellar-border pt-md px-md">
+<a class="flex items-center gap-md font-mono-label text-on-surface-variant hover:text-star-white py-xs" href="#">
+<span class="material-symbols-outlined text-sm">menu_book</span> DOCS
+                </a>
+<a class="flex items-center gap-md font-mono-label text-on-surface-variant hover:text-star-white py-xs" href="#">
+<span class="material-symbols-outlined text-sm">contact_support</span> SUPPORT
+                </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto bg-background p-grid-margin relative">
+<!-- Summary Readouts -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-grid-gutter mb-lg">
+<div class="bg-deep-space border border-stellar-border p-md clip-card group hover:border-cyber-blue transition-all">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-mono-label text-[10px] text-phantom-grey tracking-widest">TOTAL MISSIONS</span>
+<span class="material-symbols-outlined text-cyber-blue text-lg" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+<div class="font-display-quantum text-display-quantum text-cyber-blue glow-blue flicker-animation">412</div>
+<div class="h-1 bg-nebula-navy w-full mt-sm"><div class="h-full bg-cyber-blue w-[85%]"></div></div>
+</div>
+<div class="bg-deep-space border border-stellar-border p-md clip-card group hover:border-bio-green transition-all">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-mono-label text-[10px] text-phantom-grey tracking-widest">LIVE NODES</span>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-bio-green pulse-animation shadow-[0_0_8px_#00ff88]"></div>
+<span class="font-mono-label text-[10px] text-bio-green">ACTIVE</span>
+</div>
+</div>
+<div class="font-display-quantum text-display-quantum text-bio-green flicker-animation">29</div>
+<div class="h-1 bg-nebula-navy w-full mt-sm"><div class="h-full bg-bio-green w-[60%]"></div></div>
+</div>
+<div class="bg-deep-space border border-stellar-border p-md clip-card group hover:border-alert-red transition-all">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-mono-label text-[10px] text-phantom-grey tracking-widest">BLOCKED SECTORS</span>
+<span class="material-symbols-outlined text-alert-red text-lg">security_update_warning</span>
+</div>
+<div class="font-display-quantum text-display-quantum text-alert-red flicker-animation">04</div>
+<div class="h-1 bg-nebula-navy w-full mt-sm"><div class="h-full bg-alert-red w-[12%]"></div></div>
+</div>
+<div class="bg-deep-space border border-stellar-border p-md clip-card group hover:border-hologram-violet transition-all">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-mono-label text-[10px] text-phantom-grey tracking-widest">FEATURED UPLINKS</span>
+<span class="material-symbols-outlined text-hologram-violet text-lg" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="font-display-quantum text-display-quantum text-hologram-violet flicker-animation">18</div>
+<div class="h-1 bg-nebula-navy w-full mt-sm"><div class="h-full bg-hologram-violet w-[45%]"></div></div>
+</div>
+</section>
+<!-- Projects Table Console -->
+<section class="bg-deep-space border border-stellar-border overflow-hidden clip-card">
+<div class="flex items-center justify-between p-md bg-nebula-navy border-b border-stellar-border">
+<h2 class="font-heading text-subheading text-ice-blue uppercase tracking-widest">MISSION PROJECT CORE</h2>
+<div class="flex gap-sm">
+<div class="relative">
+<input class="bg-void-black border border-stellar-border text-on-surface font-mono-label text-[10px] px-lg py-xs w-64 focus:border-cyber-blue outline-none" placeholder="QUERY DATABASE..." type="text"/>
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-phantom-grey text-sm">search</span>
+</div>
+<button class="bg-stellar-border p-xs hover:bg-cyber-blue hover:text-void-black transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-void-black/50 border-b border-stellar-border">
+<th class="p-md font-mono-label text-[10px] text-phantom-grey uppercase tracking-widest"><span class="flex items-center gap-xs">SORT <span class="material-symbols-outlined text-xs">unfold_more</span></span></th>
+<th class="p-md font-mono-label text-[10px] text-phantom-grey uppercase tracking-widest">MISSION NAME</th>
+<th class="p-md font-mono-label text-[10px] text-phantom-grey uppercase tracking-widest">STATUS</th>
+<th class="p-md font-mono-label text-[10px] text-phantom-grey uppercase tracking-widest">CATEGORY</th>
+<th class="p-md font-mono-label text-[10px] text-phantom-grey uppercase tracking-widest">PUBLIC</th>
+<th class="p-md font-mono-label text-[10px] text-phantom-grey uppercase tracking-widest">FEATURED</th>
+<th class="p-md font-mono-label text-[10px] text-phantom-grey uppercase tracking-widest text-right">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-stellar-border/30">
+<!-- Row 1 -->
+<tr class="hover:bg-nebula-navy/30 transition-colors group">
+<td class="p-md font-mono-label text-ice-blue">001</td>
+<td class="p-md">
+<div class="font-heading text-body text-star-white uppercase">Project Nebula-Core</div>
+<div class="font-mono-label text-[9px] text-phantom-grey">UUID: XN-8829-FF</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-sm">
+<div class="w-1.5 h-1.5 bg-bio-green pulse-animation"></div>
+<span class="font-mono-label text-bio-green text-[10px]">LIVE</span>
+</div>
+</td>
+<td class="p-md font-mono-label text-[10px] text-on-surface-variant">[XENO-TECH]</td>
+<td class="p-md">
+<span class="material-symbols-outlined text-cyber-blue" style="font-variation-settings: 'FILL' 1;">visibility</span>
+</td>
+<td class="p-md">
+<span class="material-symbols-outlined text-hologram-violet" style="font-variation-settings: 'FILL' 1;">star</span>
+</td>
+<td class="p-md text-right">
+<div class="flex justify-end gap-sm opacity-50 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 flex items-center justify-center border border-stellar-border hover:border-cyber-blue hover:text-cyber-blue">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-stellar-border hover:border-alert-red hover:text-alert-red">
+<span class="material-symbols-outlined text-sm">archive</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-nebula-navy/30 transition-colors group">
+<td class="p-md font-mono-label text-ice-blue">002</td>
+<td class="p-md">
+<div class="font-heading text-body text-star-white uppercase">Void Scanner Protocol</div>
+<div class="font-mono-label text-[9px] text-phantom-grey">UUID: XN-1204-AQ</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-sm">
+<div class="w-1.5 h-1.5 bg-cyber-blue pulse-animation"></div>
+<span class="font-mono-label text-cyber-blue text-[10px]">BUILDING</span>
+</div>
+</td>
+<td class="p-md font-mono-label text-[10px] text-on-surface-variant">[TELEMETRY]</td>
+<td class="p-md">
+<span class="material-symbols-outlined text-phantom-grey">visibility_off</span>
+</td>
+<td class="p-md">
+<span class="material-symbols-outlined text-phantom-grey">star_outline</span>
+</td>
+<td class="p-md text-right">
+<div class="flex justify-end gap-sm opacity-50 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 flex items-center justify-center border border-stellar-border hover:border-cyber-blue hover:text-cyber-blue">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-stellar-border hover:border-alert-red hover:text-alert-red">
+<span class="material-symbols-outlined text-sm">archive</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-nebula-navy/30 transition-colors group">
+<td class="p-md font-mono-label text-ice-blue">003</td>
+<td class="p-md">
+<div class="font-heading text-body text-star-white uppercase">Stellar Lattice</div>
+<div class="font-mono-label text-[9px] text-phantom-grey">UUID: XN-0033-LK</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-sm">
+<div class="w-1.5 h-1.5 bg-alert-red"></div>
+<span class="font-mono-label text-alert-red text-[10px] tracking-tighter">BLOCKED</span>
+</div>
+</td>
+<td class="p-md font-mono-label text-[10px] text-on-surface-variant">[INFRA]</td>
+<td class="p-md">
+<span class="material-symbols-outlined text-cyber-blue" style="font-variation-settings: 'FILL' 1;">visibility</span>
+</td>
+<td class="p-md">
+<span class="material-symbols-outlined text-hologram-violet" style="font-variation-settings: 'FILL' 1;">star</span>
+</td>
+<td class="p-md text-right">
+<div class="flex justify-end gap-sm opacity-50 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 flex items-center justify-center border border-stellar-border hover:border-cyber-blue hover:text-cyber-blue">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-stellar-border hover:border-alert-red hover:text-alert-red">
+<span class="material-symbols-outlined text-sm">archive</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-nebula-navy/30 transition-colors group">
+<td class="p-md font-mono-label text-ice-blue">004</td>
+<td class="p-md">
+<div class="font-heading text-body text-star-white uppercase">Quantum Encryption v2</div>
+<div class="font-mono-label text-[9px] text-phantom-grey">UUID: XN-5511-RT</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-sm">
+<div class="w-1.5 h-1.5 bg-hologram-violet pulse-animation"></div>
+<span class="font-mono-label text-hologram-violet text-[10px]">[REVIEW]</span>
+</div>
+</td>
+<td class="p-md font-mono-label text-[10px] text-on-surface-variant">[CRYPT]</td>
+<td class="p-md">
+<span class="material-symbols-outlined text-phantom-grey">visibility_off</span>
+</td>
+<td class="p-md">
+<span class="material-symbols-outlined text-phantom-grey">star_outline</span>
+</td>
+<td class="p-md text-right">
+<div class="flex justify-end gap-sm opacity-50 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 flex items-center justify-center border border-stellar-border hover:border-cyber-blue hover:text-cyber-blue">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-stellar-border hover:border-alert-red hover:text-alert-red">
+<span class="material-symbols-outlined text-sm">archive</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-md bg-void-black border-t border-stellar-border flex items-center justify-between">
+<div class="font-mono-label text-[9px] text-phantom-grey uppercase">PAGE 01 OF 42 — BUFFER STATUS: OPTIMAL</div>
+<div class="flex gap-xs">
+<button class="px-md py-xs bg-nebula-navy font-mono-label text-[10px] text-cyber-blue border border-stellar-border hover:bg-cyber-blue hover:text-void-black transition-colors uppercase">PREV_TRACK</button>
+<button class="px-md py-xs bg-nebula-navy font-mono-label text-[10px] text-cyber-blue border border-stellar-border hover:bg-cyber-blue hover:text-void-black transition-colors uppercase">NEXT_TRACK</button>
+</div>
+</div>
+</section>
+<!-- Bottom Telemetry Log Overlay (Visual Filler for Density) -->
+<div class="mt-lg grid grid-cols-1 lg:grid-cols-3 gap-grid-gutter h-48">
+<div class="bg-deep-space border border-stellar-border p-md font-mono-label text-[9px] overflow-hidden scanline relative">
+<div class="flex justify-between border-b border-stellar-border mb-xs pb-xs text-cyber-blue">
+<span>LIVE TELEMETRY FEED</span>
+<span class="pulse-animation">REC●</span>
+</div>
+<div class="space-y-1 text-phantom-grey">
+<p><span class="text-bio-green">[08:44:12]</span> SYNC_REQUEST from Node_7G: OK</p>
+<p><span class="text-bio-green">[08:44:15]</span> PACKET_RECV checksum: F8829</p>
+<p><span class="text-plasma-orange">[08:44:22]</span> WARNING: Latency surge in Sector 4</p>
+<p><span class="text-bio-green">[08:44:29]</span> HANDSHAKE complete with GRID_CORE</p>
+<p><span class="text-bio-green">[08:44:31]</span> REFRESHING mission manifest...</p>
+<p><span class="text-phantom-grey">[08:44:35]</span> IDLE_STATE engaged.</p>
+</div>
+</div>
+<div class="lg:col-span-2 bg-nebula-navy/20 border border-stellar-border overflow-hidden relative">
+<img class="w-full h-full object-cover opacity-40 mix-blend-screen" data-alt="A wide-angle, high-density digital readout displaying abstract futuristic data visualizations, wave forms, and hexagonal grid structures. The color palette is strictly deep space black, electric cyber-blue, and bioluminescent green with subtle scanline overlays to create a functional sci-fi command terminal atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqoYTWhf0kV4mU-uLSvIijXcRbMOy8MFE_ke8qZZjAQx3oxi5OdmmkqYHbvEbC2KkbfZswM5Js28NKzgC8ZSKTcUbsoaT99E4xtW3anqxnkQCj-eAOd7JDztVrYDGzXNqE4VWZSVj5aacXoDkD32MSwzdFaSXAAvYP3DdyZIPhzn2LSUaxf0M1fQujU1hDNRjEuGse-biYuuY9V67CMx8J7c8jCtaH3TW28sI2a5GtyEPlttXsBCcb6C8pCUco5YJUN0wp7rMDjvfp"/>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="text-center">
+<div class="font-heading text-lg text-cyber-blue tracking-[1rem] uppercase">GRID_ACTIVE</div>
+<div class="font-mono-label text-[10px] text-ice-blue">SYSTEM REFRESH IN 4.2s</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="flex lg:hidden justify-around items-center w-full pb-safe fixed bottom-0 z-50 h-14 border-t border-stellar-border bg-void-black/90 backdrop-blur-md">
+<a class="flex flex-col items-center justify-center text-neon-cyan drop-shadow-[0_0_5px_#00f5ff]" href="#">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-caption text-caption uppercase">TIMELINE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-phantom-grey hover:text-ice-blue scale-95 duration-75" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-caption text-caption uppercase">TELEMETRY</span>
+</a>
+<a class="flex flex-col items-center justify-center text-phantom-grey hover:text-ice-blue scale-95 duration-75" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="font-caption text-caption uppercase">LOGS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-phantom-grey hover:text-ice-blue scale-95 duration-75" href="#">
+<span class="material-symbols-outlined">satellite_alt</span>
+<span class="font-caption text-caption uppercase">UPLINK</span>
+</a>
+</nav>
+</body></html>

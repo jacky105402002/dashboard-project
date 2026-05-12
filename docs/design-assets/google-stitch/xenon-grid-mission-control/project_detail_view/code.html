@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>XENON GRID - Mission Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&amp;family=Space+Mono:wght@400;700&amp;family=Rajdhani:wght@400;500;600;700&amp;family=Doto:wght@900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glow-blue { box-shadow: 0 0 15px rgba(0, 180, 216, 0.4); }
+        .glow-cyan { box-shadow: 0 0 15px rgba(0, 245, 255, 0.4); }
+        .glow-red { box-shadow: 0 0 15px rgba(255, 31, 78, 0.4); }
+        .glow-green { box-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
+        .clip-card { clip-path: polygon(0% 0%, 95% 0%, 100% 5%, 100% 100%, 5% 100%, 0% 95%); }
+        .clip-button { clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%); }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 180, 216, 0.03) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        @keyframes pulse-bio {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+        .animate-pulse-bio { animation: pulse-bio 2s infinite ease-in-out; }
+        @keyframes flicker {
+            0% { opacity: 0.9; }
+            5% { opacity: 0.8; }
+            10% { opacity: 0.9; }
+            15% { opacity: 1; }
+            80% { opacity: 1; }
+            90% { opacity: 0.8; }
+            100% { opacity: 0.9; }
+        }
+        .flicker-animation { animation: flicker 4s infinite; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "deep-space": "#071122",
+                      "on-secondary-container": "#006c71",
+                      "on-primary-container": "#00414f",
+                      "background": "#0e1416",
+                      "on-surface-variant": "#bcc9ce",
+                      "cyber-blue": "#00b4d8",
+                      "secondary": "#e6feff",
+                      "alert-red": "#ff1f4e",
+                      "ice-blue": "#93c5fd",
+                      "stellar-border": "#0a2a4a",
+                      "nebula-navy": "#0c1f3f",
+                      "on-primary": "#003642",
+                      "on-surface": "#dee3e6",
+                      "bio-green": "#00ff88",
+                      "plasma-purple": "#7c3aed",
+                      "on-tertiary": "#4d2600",
+                      "hologram-violet": "#a855f7",
+                      "primary": "#4cd6fb",
+                      "surface-container": "#1b2023",
+                      "on-secondary-fixed-variant": "#004f53",
+                      "on-primary-fixed-variant": "#004e5f",
+                      "surface-bright": "#343a3c",
+                      "on-error": "#690005",
+                      "tertiary": "#ffb77d",
+                      "tertiary-fixed-dim": "#ffb77d",
+                      "surface-tint": "#4cd6fb",
+                      "on-tertiary-fixed": "#2f1500",
+                      "outline": "#869398",
+                      "secondary-container": "#00f4fe",
+                      "tertiary-fixed": "#ffdcc3",
+                      "plasma-orange": "#ff6d00",
+                      "signal-dim": "#4a6785",
+                      "surface-container-low": "#171c1f",
+                      "inverse-primary": "#00677d",
+                      "gradient-singularity": "linear-gradient(135deg, #020810 0%, #071122 40%, #0c1f3f 100%)",
+                      "on-secondary-fixed": "#002021",
+                      "on-tertiary-container": "#5d2f00",
+                      "primary-container": "#00b4d8",
+                      "secondary-fixed": "#63f7ff",
+                      "surface-container-high": "#252b2d",
+                      "star-white": "#e8f4ff",
+                      "neon-cyan": "#00f5ff",
+                      "inverse-on-surface": "#2b3134",
+                      "on-secondary": "#003739",
+                      "void-black": "#020810",
+                      "inverse-surface": "#dee3e6",
+                      "surface-container-lowest": "#090f11",
+                      "outline-variant": "#3d494d",
+                      "on-primary-fixed": "#001f27",
+                      "error-container": "#93000a",
+                      "error": "#ffb4ab",
+                      "gradient-anomaly": "linear-gradient(135deg, #ff1f4e 0%, #7c3aed 60%, #ff6d00 100%)",
+                      "surface-variant": "#303638",
+                      "on-error-container": "#ffdad6",
+                      "on-background": "#dee3e6",
+                      "phantom-grey": "#1e3a5f",
+                      "on-tertiary-fixed-variant": "#6e3900",
+                      "primary-fixed": "#b3ebff",
+                      "surface": "#0e1416",
+                      "primary-fixed-dim": "#4cd6fb",
+                      "gradient-warp": "linear-gradient(135deg, #00b4d8 0%, #7c3aed 50%, #00f5ff 100%)",
+                      "secondary-fixed-dim": "#00dce5",
+                      "surface-container-highest": "#303638",
+                      "surface-dim": "#0e1416"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "32px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "grid-gutter": "12px",
+                      "xl": "64px",
+                      "md": "16px",
+                      "base": "4px",
+                      "grid-margin": "20px"
+              },
+              "fontFamily": {
+                      "heading": ["Orbitron"],
+                      "heading-lg": ["Orbitron"],
+                      "subheading": ["Orbitron"],
+                      "mono-label": ["Space Mono"],
+                      "caption": ["Space Mono"],
+                      "body": ["Rajdhani"],
+                      "display-quantum": ["Doto"]
+              },
+              "fontSize": {
+                      "heading": ["36px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                      "heading-lg": ["48px", {"lineHeight": "1.0", "fontWeight": "900"}],
+                      "subheading": ["18px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                      "mono-label": ["11px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                      "caption": ["10px", {"lineHeight": "0.8", "fontWeight": "700"}],
+                      "body": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "display-quantum": ["106px", {"lineHeight": "1.0", "fontWeight": "900"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-void-black text-on-surface font-body selection:bg-neon-cyan selection:text-void-black overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar Shell -->
+<header class="bg-void-black text-cyber-blue font-heading text-heading border-b border-cyber-blue/30 shadow-[0_0_15px_rgba(0,180,216,0.2)] flicker-animation flex justify-between items-center w-full px-grid-margin h-16 sticky top-0 z-50">
+<div class="flex items-center gap-md">
+<span class="font-heading-lg text-heading-lg font-black text-star-white tracking-widest uppercase">XENON GRID</span>
+<nav class="hidden md:flex items-center gap-md ml-lg">
+<a class="text-neon-cyan border-b-2 border-neon-cyan pb-1 font-mono-label hover:text-neon-cyan transition-colors duration-150" href="#">MISSIONS</a>
+<a class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150" href="#">DRIVES</a>
+<a class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150" href="#">SYSTEMS</a>
+<a class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150" href="#">NODES</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-ice-blue hover:text-neon-cyan transition-all">notifications_active</button>
+<button class="material-symbols-outlined text-ice-blue hover:text-neon-cyan transition-all">settings_input_component</button>
+<div class="w-8 h-8 rounded-full border border-cyber-blue/50 bg-surface-variant overflow-hidden">
+<img alt="Operator Avatar" class="w-full h-full object-cover" data-alt="A futuristic portrait of a cybernetic operator with neon blue glowing circuitry embedded in their face. The image is styled with a retro-sci-fi aesthetic, high contrast between deep blacks and bright bioluminescent accents, and a subtle scanline texture over a high-tech console background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyNpGtqjeFa2H9lTdiTDjvcQDHuXQrBtCPzJEuBYB5etWAEdmN9SgZ6k6lnY4QP60iEB8O2kmw2C8LG_8OiAGkrwjMV5jjXOOZ2n9TR8-CJtNAfNF2E0ccowkcrHnu99ooKWZv6blFoA8kidXepmlx0DmEiHm9EVDB-3xC-EQkY7Nv6lTERSR1ryxxPrqrO-frOG4Aub0edJMqSrKMxL3k0UYdtB2z9iuLprl8heBcR3fqD0yBSwmGzC3eBsmsCxskHv22_AJSaYlm"/>
+</div>
+</div>
+</header>
+<div class="flex-1 flex overflow-hidden relative">
+<!-- SideNavBar Shell -->
+<aside class="hidden lg:flex flex-col h-full py-md bg-deep-space text-cyber-blue font-mono-label text-mono-label border-r border-stellar-border shadow-[5px_0_15px_rgba(0,0,0,0.5)] w-64">
+<div class="px-md mb-lg">
+<h2 class="font-heading text-subheading text-ice-blue tracking-tighter uppercase">STATUS RAIL</h2>
+<p class="text-[9px] text-phantom-grey tracking-widest font-mono-label uppercase">SECTOR 7-G</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-sm px-md py-sm bg-nebula-navy text-bio-green border-l-4 border-bio-green pulse-on-hover transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">sensors</span>
+<span>OPERATIONAL</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant hover:text-star-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">sync_alt</span>
+<span>SYNCING</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant hover:text-star-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">layers</span>
+<span>STAGED</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant hover:text-star-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span>LOCKED</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-variant hover:text-star-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">dangerous</span>
+<span>TERMINATED</span>
+</a>
+</nav>
+<div class="px-md mt-auto space-y-lg">
+<button class="w-full py-sm bg-gradient-anomaly text-void-black font-heading text-xs clip-button glow-red uppercase font-black">NEW MISSION</button>
+<div class="space-y-1 pt-md border-t border-stellar-border/30">
+<a class="flex items-center gap-sm px-md py-xs text-phantom-grey hover:text-ice-blue" href="#">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+<span>DOCS</span>
+</a>
+<a class="flex items-center gap-sm px-md py-xs text-phantom-grey hover:text-ice-blue" href="#">
+<span class="material-symbols-outlined text-sm">contact_support</span>
+<span>SUPPORT</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Dashboard Canvas (Blurred/Dimmed) -->
+<main class="flex-1 p-lg overflow-y-auto filter blur-md opacity-40 transition-all duration-500 bg-void-black relative">
+<div class="scanline absolute inset-0 z-10"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-md relative z-0">
+<!-- Placeholder Cards -->
+<div class="bg-deep-space border border-stellar-border p-md clip-card h-48"></div>
+<div class="bg-deep-space border border-stellar-border p-md clip-card h-48"></div>
+<div class="bg-deep-space border border-stellar-border p-md clip-card h-48"></div>
+<div class="bg-deep-space border border-stellar-border p-md clip-card h-48"></div>
+<div class="bg-deep-space border border-stellar-border p-md clip-card h-48"></div>
+<div class="bg-deep-space border border-stellar-border p-md clip-card h-48"></div>
+</div>
+</main>
+<!-- Backdrop Overlay -->
+<div class="fixed inset-0 bg-void-black/60 z-[60] backdrop-blur-sm"></div>
+<!-- Detail Panel (Active Modal) -->
+<div class="fixed inset-0 flex items-center justify-center z-[70] p-md">
+<section class="bg-deep-space border-2 border-cyber-blue/50 w-full max-w-4xl max-h-[921px] overflow-hidden clip-card shadow-[0_0_50px_rgba(0,180,216,0.3)] flex flex-col relative">
+<div class="scanline absolute inset-0"></div>
+<!-- Panel Header -->
+<header class="p-lg border-b border-stellar-border flex justify-between items-start relative z-10">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-bio-green/20 text-bio-green font-mono-label text-[10px] px-sm py-0.5 border border-bio-green/40 flex items-center gap-xs">
+<span class="w-1.5 h-1.5 bg-bio-green rounded-full animate-pulse-bio shadow-[0_0_8px_#00ff88]"></span>
+                                LIVE
+                            </span>
+<span class="text-phantom-grey font-mono-label text-[10px] tracking-widest uppercase">ID: XN-7721-WRITER</span>
+</div>
+<h1 class="font-heading text-heading text-star-white uppercase tracking-tight">Engineer Post Writer</h1>
+</div>
+<button class="material-symbols-outlined text-phantom-grey hover:text-alert-red transition-colors">close</button>
+</header>
+<div class="flex-1 overflow-y-auto p-lg flex flex-col lg:flex-row gap-lg relative z-10">
+<!-- Column 1: Core Details -->
+<div class="flex-1 space-y-lg">
+<div class="space-y-md">
+<h3 class="font-mono-label text-ice-blue border-b border-cyber-blue/20 pb-xs uppercase text-[12px] font-bold">Project Overview</h3>
+<p class="text-on-surface leading-relaxed font-body text-base">
+                                A specialized LLM-driven synthesis engine designed for technical documentation and engineering blog generation. Utilizing xenomorphic core architectures to analyze raw code changes and translate them into high-fidelity technical narratives. Automated markdown formatting and workflow integration ready for instant deployment.
+                            </p>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="bg-nebula-navy/50 border border-stellar-border p-sm clip-card">
+<span class="text-phantom-grey font-mono-label text-[10px] uppercase block mb-xs">Source Node</span>
+<a class="text-cyber-blue font-body flex items-center gap-xs hover:underline" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span>
+                                    GITHUB_REPOS
+                                </a>
+</div>
+<div class="bg-nebula-navy/50 border border-stellar-border p-sm clip-card">
+<span class="text-phantom-grey font-mono-label text-[10px] uppercase block mb-xs">Neural Output</span>
+<a class="text-bio-green font-body flex items-center gap-xs hover:underline" href="#">
+<span class="material-symbols-outlined text-sm">bolt</span>
+                                    LIVE_DEMO_01
+                                </a>
+</div>
+</div>
+<div class="space-y-md">
+<h3 class="font-mono-label text-ice-blue border-b border-cyber-blue/20 pb-xs uppercase text-[12px] font-bold">Mission Timeline</h3>
+<div class="space-y-sm">
+<div class="flex gap-md">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-bio-green shadow-[0_0_5px_#00ff88]"></div>
+<div class="w-px h-full bg-stellar-border"></div>
+</div>
+<div class="pb-md">
+<span class="text-phantom-grey font-mono-label text-[10px]">T-MINUS 04:22:01</span>
+<p class="text-on-surface-variant font-body text-sm italic">Core synthesis complete. Narrative alignment 98%.</p>
+</div>
+</div>
+<div class="flex gap-md">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-cyber-blue shadow-[0_0_5px_#00b4d8]"></div>
+<div class="w-px h-full bg-stellar-border"></div>
+</div>
+<div class="pb-md">
+<span class="text-phantom-grey font-mono-label text-[10px]">T-MINUS 12:45:55</span>
+<p class="text-on-surface-variant font-body text-sm italic">Codex Skill integration validated by Hive Mind.</p>
+</div>
+</div>
+<div class="flex gap-md">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-stellar-border"></div>
+</div>
+<div>
+<span class="text-phantom-grey font-mono-label text-[10px]">T-MINUS 26:11:09</span>
+<p class="text-phantom-grey font-body text-sm">Initial cluster deployment in Sector 7-G.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 2: Tech Specs -->
+<div class="w-full lg:w-72 space-y-lg">
+<div class="bg-nebula-navy/30 border border-stellar-border p-md clip-card space-y-md">
+<h3 class="font-mono-label text-star-white uppercase text-[12px] font-bold">Tech Stack</h3>
+<div class="space-y-sm">
+<div class="flex justify-between items-center bg-void-black p-xs border-l-2 border-plasma-orange">
+<span class="text-on-surface font-body text-xs">Codex Skill</span>
+<span class="material-symbols-outlined text-plasma-orange text-sm">psychology</span>
+</div>
+<div class="flex justify-between items-center bg-void-black p-xs border-l-2 border-cyber-blue">
+<span class="text-on-surface font-body text-xs">Markdown</span>
+<span class="material-symbols-outlined text-cyber-blue text-sm">article</span>
+</div>
+<div class="flex justify-between items-center bg-void-black p-xs border-l-2 border-hologram-violet">
+<span class="text-on-surface font-body text-xs">Workflow</span>
+<span class="material-symbols-outlined text-hologram-violet text-sm">account_tree</span>
+</div>
+</div>
+</div>
+<div class="bg-void-black border border-stellar-border p-md overflow-hidden relative group">
+<div class="scanline absolute inset-0 opacity-20"></div>
+<img alt="Telemetry Visual" class="w-full h-auto opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0" data-alt="A highly complex data visualization panel showing real-time technical telemetry with glowing bio-green wave patterns and sharp blue grid lines. The aesthetic is dark and immersive, resembling a sci-fi command terminal screen with deep blacks, vibrant blue glows, and a dense overlay of technical diagnostic data and code snippets." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB1BaLnnUJmszKEfEsCaQcUSm2VianzTt8LDp3hE5BLXCGT8elqxaJwuw5YpoA52dF1Zn1FNwu_-QEfu94lGZrIBgdYtSvhre4IAnd0thpI12TxGCWYHjjabs-Cmo25xZDdkhmVqv0R8Y7N9NYMdaU1ConE7ejQBI2E-4WTj9ei5ULbkyCQXpz_Q07I5wnQt49cU8v2xPxRdHx6JlCbHkBMhBRZo6iWMb2AEzK8-7rNiagNL3O7B_NY-hOxdSggQdyTltv1TdYQFHK"/>
+</div>
+<button class="w-full py-md bg-void-black border border-cyber-blue text-cyber-blue font-heading text-sm clip-button hover:bg-cyber-blue/10 transition-all uppercase font-bold glow-blue">RE-INITIALIZE ENGINE</button>
+</div>
+</div>
+<!-- Panel Footer -->
+<footer class="p-sm bg-nebula-navy/50 border-t border-stellar-border flex justify-between items-center px-lg relative z-10">
+<div class="flex items-center gap-md">
+<span class="text-[10px] font-mono-label text-phantom-grey uppercase">Encryption: AES-GRID-X</span>
+<span class="text-[10px] font-mono-label text-phantom-grey uppercase">Pulse: 60Hz</span>
+</div>
+<div class="text-[10px] font-mono-label text-bio-green">SYSTEMS NOMINAL // READY FOR OPERATOR INPUT</div>
+</footer>
+</section>
+</div>
+</div>
+<!-- BottomNavBar Shell (Mobile) -->
+<nav class="flex lg:hidden justify-around items-center w-full pb-safe bg-void-black text-primary font-caption text-caption fixed bottom-0 z-50 h-14 border-t border-stellar-border bg-void-black/90 backdrop-blur-md">
+<button class="flex flex-col items-center justify-center text-phantom-grey hover:text-ice-blue scale-95 duration-75">
+<span class="material-symbols-outlined">timeline</span>
+<span class="uppercase">TIMELINE</span>
+</button>
+<button class="flex flex-col items-center justify-center text-neon-cyan drop-shadow-[0_0_5px_#00f5ff] scale-95 duration-75">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="uppercase">TELEMETRY</span>
+</button>
+<button class="flex flex-col items-center justify-center text-phantom-grey hover:text-ice-blue scale-95 duration-75">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="uppercase">LOGS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-phantom-grey hover:text-ice-blue scale-95 duration-75">
+<span class="material-symbols-outlined">satellite_alt</span>
+<span class="uppercase">UPLINK</span>
+</button>
+</nav>
+</body></html>

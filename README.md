@@ -26,4 +26,5 @@ The application has two websites and one database-backed API.
 - [docs/claude-design-uiux-ssd.md](docs/claude-design-uiux-ssd.md): UIUX SSD for Claude Design, focused on product structure and behavior.
 - [docs/google-stitch-uiux-ssd.md](docs/google-stitch-uiux-ssd.md): UIUX SSD for Google Stitch, including visual and screen generation guidance.
 - [docs/design-assets/claude-design/github-dashboard](docs/design-assets/claude-design/github-dashboard): Claude Design exported dashboard mockup source.
+- [docs/design-assets/google-stitch/xenon-grid-mission-control](docs/design-assets/google-stitch/xenon-grid-mission-control): Google Stitch exported dashboard mockups and screenshots.
 

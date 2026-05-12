@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>XENON GRID | ADMIN CONTROL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&amp;family=Space+Mono:wght@400;700&amp;family=Rajdhani:wght@400;500;600;700&amp;family=Doto:wght@900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .clip-card {
+            clip-path: polygon(0% 0%, 95% 0%, 100% 5%, 100% 100%, 5% 100%, 0% 95%);
+        }
+        .clip-button {
+            clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 180, 216, 0.05) 51%);
+            background-size: 100% 4px;
+        }
+        .glow-blue { box-shadow: 0 0 15px rgba(0, 180, 216, 0.4); }
+        .glow-red { box-shadow: 0 0 20px rgba(255, 31, 78, 0.6); }
+        .flicker-animation { animation: flicker 2s infinite; }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.85; }
+            100% { opacity: 1; }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "deep-space": "#071122",
+                      "on-secondary-container": "#006c71",
+                      "on-primary-container": "#00414f",
+                      "background": "#0e1416",
+                      "on-surface-variant": "#bcc9ce",
+                      "cyber-blue": "#00b4d8",
+                      "secondary": "#e6feff",
+                      "alert-red": "#ff1f4e",
+                      "ice-blue": "#93c5fd",
+                      "stellar-border": "#0a2a4a",
+                      "nebula-navy": "#0c1f3f",
+                      "on-primary": "#003642",
+                      "on-surface": "#dee3e6",
+                      "bio-green": "#00ff88",
+                      "plasma-purple": "#7c3aed",
+                      "on-tertiary": "#4d2600",
+                      "hologram-violet": "#a855f7",
+                      "primary": "#4cd6fb",
+                      "surface-container": "#1b2023",
+                      "on-secondary-fixed-variant": "#004f53",
+                      "on-primary-fixed-variant": "#004e5f",
+                      "surface-bright": "#343a3c",
+                      "on-error": "#690005",
+                      "tertiary": "#ffb77d",
+                      "tertiary-fixed-dim": "#ffb77d",
+                      "surface-tint": "#4cd6fb",
+                      "on-tertiary-fixed": "#2f1500",
+                      "outline": "#869398",
+                      "secondary-container": "#00f4fe",
+                      "tertiary-fixed": "#ffdcc3",
+                      "plasma-orange": "#ff6d00",
+                      "signal-dim": "#4a6785",
+                      "surface-container-low": "#171c1f",
+                      "inverse-primary": "#00677d",
+                      "gradient-singularity": "linear-gradient(135deg, #020810 0%, #071122 40%, #0c1f3f 100%)",
+                      "on-secondary-fixed": "#002021",
+                      "on-tertiary-container": "#5d2f00",
+                      "primary-container": "#00b4d8",
+                      "secondary-fixed": "#63f7ff",
+                      "surface-container-high": "#252b2d",
+                      "star-white": "#e8f4ff",
+                      "neon-cyan": "#00f5ff",
+                      "inverse-on-surface": "#2b3134",
+                      "on-secondary": "#003739",
+                      "void-black": "#020810",
+                      "inverse-surface": "#dee3e6",
+                      "surface-container-lowest": "#090f11",
+                      "outline-variant": "#3d494d",
+                      "on-primary-fixed": "#001f27",
+                      "error-container": "#93000a",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#303638",
+                      "on-error-container": "#ffdad6",
+                      "on-background": "#dee3e6",
+                      "phantom-grey": "#1e3a5f",
+                      "on-tertiary-fixed-variant": "#6e3900",
+                      "primary-fixed": "#b3ebff",
+                      "surface": "#0e1416",
+                      "primary-fixed-dim": "#4cd6fb",
+                      "secondary-fixed-dim": "#00dce5",
+                      "surface-container-highest": "#303638",
+                      "surface-dim": "#0e1416"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "32px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "grid-gutter": "12px",
+                      "xl": "64px",
+                      "md": "16px",
+                      "base": "4px",
+                      "grid-margin": "20px"
+              },
+              "fontFamily": {
+                      "heading": ["Orbitron"],
+                      "heading-lg": ["Orbitron"],
+                      "subheading": ["Orbitron"],
+                      "mono-label": ["Space Mono"],
+                      "caption": ["Space Mono"],
+                      "body": ["Rajdhani"],
+                      "display-quantum": ["Doto"]
+              },
+              "fontSize": {
+                      "heading": ["36px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                      "heading-lg": ["48px", {"lineHeight": "1.0", "fontWeight": "900"}],
+                      "subheading": ["18px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                      "mono-label": ["11px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                      "caption": ["10px", {"lineHeight": "0.8", "fontWeight": "700"}],
+                      "body": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "display-quantum": ["106px", {"lineHeight": "1.0", "fontWeight": "900"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-void-black text-on-surface font-body overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-grid-margin h-16 sticky top-0 z-50 bg-void-black border-b border-cyber-blue/30 shadow-[0_0_15px_rgba(0,180,216,0.2)]">
+<div class="flex items-center gap-md">
+<h1 class="font-heading-lg text-heading-lg font-black text-star-white tracking-widest">XENON GRID</h1>
+</div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150" href="#">MISSIONS</a>
+<a class="text-neon-cyan border-b-2 border-neon-cyan pb-1 font-mono-label" href="#">DRIVES</a>
+<a class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150" href="#">SYSTEMS</a>
+<a class="text-on-surface-variant font-mono-label hover:text-neon-cyan transition-colors duration-150" href="#">NODES</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-cyber-blue flicker-animation">notifications_active</button>
+<button class="material-symbols-outlined text-cyber-blue">settings_input_component</button>
+<div class="w-10 h-10 rounded-full border border-cyber-blue overflow-hidden">
+<img alt="Operator Avatar" class="w-full h-full object-cover" data-alt="A highly detailed close-up of a futuristic cyborg operator with bioluminescent blue circuitry patterns on their face. The lighting is cold and atmospheric, with deep shadows and neon cyan highlights reflecting off a metallic interface. The style is ultra-modern sci-fi, conveying a sense of high-tech precision and operational intensity in a dark, data-driven environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGJemUTi-eReQGpsrYgKkNf4xrSECI2QmXCBNoY-cnETsW2VA9lTix4IOqcAQit_VkvYRxDww-LBUdd3sVgEZ97xJWWvspIfNWIHYZvPaoBU76mxQ-r37JT0rZ3NTAjOljqdNeF3ultqO_s0JmmXr6GqZW14PJb7rGS0kHGZPbrojaqzwpAwkz3os9Z4vlU9hWm0fBJObqzWIEN250jIH7d9UWes0RLYv9fX8Rxc9Ttle4u7x46Z6KjwHDOYSCUTYAN6kf8zZHu3Qy"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-full py-md bg-deep-space border-r border-stellar-border w-64">
+<div class="px-md mb-lg">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-ice-blue" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-heading text-subheading text-ice-blue">STATUS RAIL</span>
+</div>
+<p class="font-mono-label text-on-surface-variant opacity-60">SECTOR 7-G</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="bg-nebula-navy text-bio-green border-l-4 border-bio-green px-md py-sm flex items-center gap-md cursor-pointer">
+<span class="material-symbols-outlined">sensors</span>
+<span class="font-mono-label text-mono-label">OPERATIONAL</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-variant px-md py-sm flex items-center gap-md cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">sync_alt</span>
+<span class="font-mono-label text-mono-label">SYNCING</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-variant px-md py-sm flex items-center gap-md cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-mono-label text-mono-label">STAGED</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-variant px-md py-sm flex items-center gap-md cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">lock</span>
+<span class="font-mono-label text-mono-label">LOCKED</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-variant px-md py-sm flex items-center gap-md cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">dangerous</span>
+<span class="font-mono-label text-mono-label">TERMINATED</span>
+</div>
+</nav>
+<div class="px-md mt-auto space-y-4">
+<button class="w-full py-sm bg-primary-container text-void-black font-heading text-body clip-button font-bold hover:glow-blue transition-all">
+                    NEW MISSION
+                </button>
+<div class="flex flex-col gap-sm border-t border-stellar-border pt-md">
+<div class="flex items-center gap-md text-on-surface-variant hover:text-star-white cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-xs">menu_book</span>
+<span class="font-mono-label text-mono-label">DOCS</span>
+</div>
+<div class="flex items-center gap-md text-on-surface-variant hover:text-star-white cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-xs">contact_support</span>
+<span class="font-mono-label text-mono-label">SUPPORT</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area: Admin Table -->
+<main class="flex-1 overflow-auto bg-background relative scanline p-lg">
+<!-- Admin Dashboard Header -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-heading text-heading text-star-white">DATA DRIVES</h2>
+<p class="font-mono-label text-cyber-blue">NODE_CLUSTER_772 / ADMIN_OVERRIDE_ENABLED</p>
+</div>
+<div class="flex gap-md">
+<div class="bg-deep-space border border-stellar-border px-md py-xs flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-bio-green pulse-animation"></span>
+<span class="font-mono-label text-bio-green">UPLINK ACTIVE</span>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-deep-space border border-stellar-border rounded-none overflow-hidden clip-card">
+<table class="w-full text-left border-collapse">
+<thead class="bg-void-black border-b border-stellar-border">
+<tr>
+<th class="px-md py-md font-heading text-body text-ice-blue">SERIAL_ID</th>
+<th class="px-md py-md font-heading text-body text-ice-blue">DESIGNATION</th>
+<th class="px-md py-md font-heading text-body text-ice-blue">LOAD_FACTOR</th>
+<th class="px-md py-md font-heading text-body text-ice-blue">STATUS</th>
+<th class="px-md py-md font-heading text-body text-ice-blue text-right">PROTOCOL</th>
+</tr>
+</thead>
+<tbody class="font-mono-label text-on-surface-variant divide-y divide-stellar-border/50">
+<tr class="hover:bg-nebula-navy transition-colors">
+<td class="px-md py-md">#XD-00812</td>
+<td class="px-md py-md font-bold text-star-white">PRIMARY_GENESIS_ARRAY</td>
+<td class="px-md py-md">88.4% / CRITICAL</td>
+<td class="px-md py-md">
+<span class="flex items-center gap-xs text-bio-green">
+<span class="material-symbols-outlined text-xs">radio_button_checked</span> LIVE
+                                </span>
+</td>
+<td class="px-md py-md text-right">
+<button class="text-phantom-grey hover:text-alert-red transition-colors material-symbols-outlined">delete_forever</button>
+</td>
+</tr>
+<tr class="hover:bg-nebula-navy transition-colors">
+<td class="px-md py-md">#XD-00944</td>
+<td class="px-md py-md font-bold text-star-white">VOID_REPLICATOR_SYNC</td>
+<td class="px-md py-md">12.2% / NOMINAL</td>
+<td class="px-md py-md">
+<span class="flex items-center gap-xs text-cyber-blue">
+<span class="material-symbols-outlined text-xs">autorenew</span> BUILDING
+                                </span>
+</td>
+<td class="px-md py-md text-right">
+<button class="text-phantom-grey hover:text-alert-red transition-colors material-symbols-outlined">delete_forever</button>
+</td>
+</tr>
+<tr class="bg-nebula-navy/30">
+<td class="px-md py-md text-alert-red">#XD-11029</td>
+<td class="px-md py-md font-bold text-alert-red">XENON_RELIQUARY_CORE</td>
+<td class="px-md py-md">0.0% / NULL</td>
+<td class="px-md py-md">
+<span class="flex items-center gap-xs text-alert-red">
+<span class="material-symbols-outlined text-xs">block</span> BLOCKED
+                                </span>
+</td>
+<td class="px-md py-md text-right">
+<button class="text-alert-red material-symbols-outlined">delete_forever</button>
+</td>
+</tr>
+<tr class="hover:bg-nebula-navy transition-colors">
+<td class="px-md py-md">#XD-00455</td>
+<td class="px-md py-md font-bold text-star-white">NEBULA_GATEWAY_UPLINK</td>
+<td class="px-md py-md">45.9% / NOMINAL</td>
+<td class="px-md py-md">
+<span class="flex items-center gap-xs text-hologram-violet">
+<span class="material-symbols-outlined text-xs">history_edu</span> REVIEW
+                                </span>
+</td>
+<td class="px-md py-md text-right">
+<button class="text-phantom-grey hover:text-alert-red transition-colors material-symbols-outlined">delete_forever</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-void-black/80 backdrop-blur-md">
+<div class="w-full max-w-lg bg-deep-space border-2 border-alert-red clip-card p-xl relative shadow-[0_0_50px_rgba(255,31,78,0.3)]">
+<!-- Modal UI Elements -->
+<div class="absolute top-0 right-0 p-md opacity-20 font-display-quantum text-[40px] pointer-events-none select-none">ERROR_404</div>
+<div class="absolute bottom-0 left-0 p-md opacity-10 font-mono-label pointer-events-none">XENON_GRID_ADMIN_V3</div>
+<div class="flex items-center gap-md mb-lg">
+<div class="w-12 h-12 flex items-center justify-center bg-alert-red/20 border border-alert-red text-alert-red flicker-animation">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<h3 class="font-heading text-heading text-star-white tracking-tighter uppercase">CONFIRM DESTRUCTION</h3>
+</div>
+<div class="mb-xl border-l-4 border-plasma-orange pl-md py-sm bg-plasma-orange/5">
+<p class="font-mono-label text-plasma-orange text-subheading mb-sm">WARNING: PERMANENT DATA ERASURE</p>
+<p class="font-body text-on-surface leading-relaxed">
+                            You are about to initiate the terminal destruction of <span class="text-star-white font-mono-label font-bold">#XD-11029: XENON_RELIQUARY_CORE</span>. 
+                            This action is irreversible and will result in the total dissolution of all bio-metric datasets associated with Sector 7-G.
+                        </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-md justify-end">
+<button class="px-lg py-sm border border-ice-blue text-ice-blue font-heading text-body clip-button hover:bg-ice-blue/10 transition-all">
+                            ABORT
+                        </button>
+<button class="px-xl py-sm bg-alert-red text-star-white font-heading text-body clip-button glow-red font-bold hover:scale-105 active:scale-95 transition-all">
+                            CONFIRM DELETE
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar -->
+<footer class="flex lg:hidden justify-around items-center w-full pb-safe fixed bottom-0 w-full z-50 h-14 border-t border-stellar-border bg-void-black/90 backdrop-blur-md">
+<div class="flex flex-col items-center justify-center text-phantom-grey hover:text-ice-blue">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-caption text-caption">TIMELINE</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neon-cyan drop-shadow-[0_0_5px_#00f5ff]">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-caption text-caption">TELEMETRY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-phantom-grey hover:text-ice-blue">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="font-caption text-caption">LOGS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-phantom-grey hover:text-ice-blue">
+<span class="material-symbols-outlined">satellite_alt</span>
+<span class="font-caption text-caption">UPLINK</span>
+</div>
+</footer>
+</body></html>
