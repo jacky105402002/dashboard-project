@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Xenon Grid — Dashboard Project · Design Surface</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="xenon-grid.css"/>
+<style>
+  html, body, #root { margin: 0; padding: 0; width: 100%; height: 100%; }
+  body { background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+  /* Ensure DC artboards render with overflow hidden (they're meant to be screens) */
+  .dc-card { overflow: hidden; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="screens-public.jsx"></script>
+<script type="text/babel" src="screens-admin.jsx"></script>
+<script type="text/babel" src="screens-mobile.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState } = React;
+
+// Each artboard is presented at 1:1 inside a DCArtboard of the same width/height.
+const DESKTOP_W = 1440;
+const DESKTOP_H = 920;
+const MOBILE_W  = 390;
+const MOBILE_H  = 844;
+
+function Screen({ children, width, height }) {
+  // The screen content is sized to the artboard dimensions so DCArtboard's
+  // dc-card crops cleanly even if our app paints right to the edges.
+  return (
+    <div style={{ width, height, position: 'relative', overflow: 'hidden' }}>
+      {children}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <DesignCanvas
+      title="Dashboard Project — Xenon Grid"
+      subtitle="Public dashboard · Admin console · States · Mobile"
+    >
+      {/* Strategy postit */}
+      <DCPostIt top={20} left={32} width={280} rotate={-2}>
+        <strong>Xenon Grid · Dashboard SSD</strong><br/>
+        9 screens covering public dashboard, all required states, full admin console, and mobile.<br/><br/>
+        ↳ Drag artboards to reorder, double-click labels to rename, ⤢ to focus any screen full-bleed.
+      </DCPostIt>
+
+      {/* ─── PUBLIC ─── */}
+      <DCSection id="public" title="Public Dashboard" subtitle="What visitors see at jacky.dev — operational, not marketing.">
+        <DCArtboard id="pub-default" label="01 · Default · Mission Grid" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><PublicDashboard/></Screen>
+        </DCArtboard>
+        <DCArtboard id="pub-drawer" label="02 · Project Detail · Scanner Drawer" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><PublicDashboardDrawer/></Screen>
+        </DCArtboard>
+      </DCSection>
+
+      {/* ─── STATES ─── */}
+      <DCSection id="states" title="Public — Required States" subtitle="Loading, filtered-empty, and uplink-lost error.">
+        <DCArtboard id="state-loading" label="03 · Loading · Acquiring Telemetry" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><PublicDashboardLoading/></Screen>
+        </DCArtboard>
+        <DCArtboard id="state-empty" label="04 · Empty · No Missions In Range" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><PublicDashboardEmpty/></Screen>
+        </DCArtboard>
+        <DCArtboard id="state-error" label="05 · Error · Signal Lost" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><PublicDashboardError/></Screen>
+        </DCArtboard>
+      </DCSection>
+
+      {/* ─── ADMIN ─── */}
+      <DCSection id="admin" title="Admin Console" subtitle="Operator surface — login, registry, project editor, destructive confirms.">
+        <DCArtboard id="adm-login" label="06 · Login · Operator Auth" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><AdminLogin/></Screen>
+        </DCArtboard>
+        <DCArtboard id="adm-login-err" label="06b · Login · Invalid Credentials" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><AdminLogin state="invalid"/></Screen>
+        </DCArtboard>
+        <DCArtboard id="adm-overview" label="07 · Project Registry · Table" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><AdminOverview/></Screen>
+        </DCArtboard>
+        <DCArtboard id="adm-editor" label="08 · Project Editor · Dirty State" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><AdminEditor state="dirty"/></Screen>
+        </DCArtboard>
+        <DCArtboard id="adm-editor-err" label="08b · Editor · Validation Error" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><AdminEditor state="validation"/></Screen>
+        </DCArtboard>
+        <DCArtboard id="adm-delete" label="09 · Delete Confirm · Anomaly Modal" width={DESKTOP_W} height={DESKTOP_H}>
+          <Screen width={DESKTOP_W} height={DESKTOP_H}><AdminDeleteConfirm/></Screen>
+        </DCArtboard>
+      </DCSection>
+
+      {/* ─── MOBILE ─── */}
+      <DCSection id="mobile" title="Mobile" subtitle="iPhone-class viewport — single column, sticky chrome, gesture-friendly chips.">
+        <DCArtboard id="mob-dash" label="10 · Mobile · Public Dashboard" width={MOBILE_W} height={MOBILE_H}>
+          <Screen width={MOBILE_W} height={MOBILE_H}><MobileDashboard/></Screen>
+        </DCArtboard>
+        <DCArtboard id="mob-detail" label="11 · Mobile · Project Detail" width={MOBILE_W} height={MOBILE_H}>
+          <Screen width={MOBILE_W} height={MOBILE_H}><MobileDetail/></Screen>
+        </DCArtboard>
+        <DCArtboard id="mob-editor" label="12 · Mobile · Admin Editor" width={MOBILE_W} height={MOBILE_H}>
+          <Screen width={MOBILE_W} height={MOBILE_H}><MobileAdminEditor/></Screen>
+        </DCArtboard>
+      </DCSection>
+
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

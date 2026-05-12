@@ -23,4 +23,7 @@ The application has two websites and one database-backed API.
 - [design.md](design.md): mission-control visual design reference adapted from the Lift-off challenge style.
 - [docs/progress.md](docs/progress.md): current planning progress and next steps.
 - [docs/technical-decision-record.md](docs/technical-decision-record.md): initial AItogo architecture decision.
+- [docs/claude-design-uiux-ssd.md](docs/claude-design-uiux-ssd.md): UIUX SSD for Claude Design, focused on product structure and behavior.
+- [docs/google-stitch-uiux-ssd.md](docs/google-stitch-uiux-ssd.md): UIUX SSD for Google Stitch, including visual and screen generation guidance.
+- [docs/design-assets/claude-design/github-dashboard](docs/design-assets/claude-design/github-dashboard): Claude Design exported dashboard mockup source.
 
