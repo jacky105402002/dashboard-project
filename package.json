@@ -1,0 +1,21 @@
+{
+  "name": "dashboard-project",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Jacky's Xenon Grid project mission-control dashboard.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev -w @dashboard/web",
+    "dev:api": "npm run start:dev -w @dashboard/api",
+    "build": "npm run build -w @dashboard/web && npm run build -w @dashboard/api",
+    "build:web": "npm run build -w @dashboard/web",
+    "build:api": "npm run build -w @dashboard/api",
+    "typecheck": "npm run typecheck -w @dashboard/web && npm run typecheck -w @dashboard/api"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

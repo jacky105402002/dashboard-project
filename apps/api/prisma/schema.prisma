@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+}
+
+enum ProjectStatus {
+  PLANNING
+  BUILDING
+  LIVE
+  PAUSED
+  BLOCKED
+  ARCHIVED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id            String        @id @default(cuid())
+  name          String
+  slug          String        @unique
+  summary       String
+  description   String?
+  status        ProjectStatus @default(PLANNING)
+  category      String
+  githubUrl     String?
+  demoUrl       String?
+  techStack     String[]      @default([])
+  isPublic      Boolean       @default(false)
+  isFeatured    Boolean       @default(false)
+  sortOrder     Int           @default(0)
+  lastUpdatedAt DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([isPublic, isFeatured, sortOrder])
+}
