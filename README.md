@@ -24,6 +24,7 @@ The application has two websites and one database-backed API.
 - [docs/progress.md](docs/progress.md): current planning progress and next steps.
 - [docs/technical-decision-record.md](docs/technical-decision-record.md): initial AItogo architecture decision.
 - [docs/deployment-zeabur.md](docs/deployment-zeabur.md): Zeabur deployment notes for the web, API, and PostgreSQL database.
+- [docs/local-docker-development.md](docs/local-docker-development.md): local Docker setup for the API and PostgreSQL database.
 - [docs/claude-design-uiux-ssd.md](docs/claude-design-uiux-ssd.md): UIUX SSD for Claude Design, focused on product structure and behavior.
 - [docs/google-stitch-uiux-ssd.md](docs/google-stitch-uiux-ssd.md): UIUX SSD for Google Stitch, including visual and screen generation guidance.
 - [docs/design-assets/claude-design/github-dashboard](docs/design-assets/claude-design/github-dashboard): Claude Design exported dashboard mockup source.
@@ -38,4 +39,10 @@ npm run dev:api
 ```
 
 The first implemented surface is `apps/web`, based on the Claude Design dashboard mockup.
+
+To run API and PostgreSQL in Docker:
+
+```powershell
+docker compose up --build
+```
 

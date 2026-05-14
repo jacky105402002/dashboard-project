@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: dashboard-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dashboard
+      POSTGRES_PASSWORD: dashboard
+      POSTGRES_DB: dashboard_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - dashboard_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dashboard -d dashboard_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    container_name: dashboard-api
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: dev
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://dashboard:dashboard@db:5432/dashboard_dev?schema=public
+      PORT: 3000
+      CORS_ORIGIN: http://localhost:5173
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - api_node_modules:/app/node_modules
+      - api_workspace_node_modules:/app/apps/api/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npm run prisma:push -w @dashboard/api && npm run start:dev -w @dashboard/api"
+
+volumes:
+  dashboard_postgres_data:
+  api_node_modules:
+  api_workspace_node_modules:
