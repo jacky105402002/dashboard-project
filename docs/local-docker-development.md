@@ -92,6 +92,13 @@ Run Prisma commands against the Docker database:
 ```powershell
 docker compose exec api npm run prisma:push -w @dashboard/api
 docker compose exec api npm run prisma:generate -w @dashboard/api
+docker compose exec api npm run prisma:seed -w @dashboard/api
+```
+
+After seeding, check:
+
+```powershell
+Invoke-WebRequest -Uri http://localhost:3000/projects/public -UseBasicParsing
 ```
 
 ## Zeabur Migration Path
