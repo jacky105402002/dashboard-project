@@ -35,6 +35,7 @@ The application has two websites and one database-backed API.
 ```powershell
 npm install
 npm run dev:web
+npm run dev:admin
 npm run dev:api
 ```
 

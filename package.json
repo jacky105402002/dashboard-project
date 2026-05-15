@@ -9,11 +9,13 @@
   ],
   "scripts": {
     "dev:web": "npm run dev -w @dashboard/web",
+    "dev:admin": "npm run dev -w @dashboard/admin",
     "dev:api": "npm run start:dev -w @dashboard/api",
-    "build": "npm run build -w @dashboard/web && npm run build -w @dashboard/api",
+    "build": "npm run build -w @dashboard/web && npm run build -w @dashboard/admin && npm run build -w @dashboard/api",
     "build:web": "npm run build -w @dashboard/web",
+    "build:admin": "npm run build -w @dashboard/admin",
     "build:api": "npm run build -w @dashboard/api",
-    "typecheck": "npm run typecheck -w @dashboard/web && npm run typecheck -w @dashboard/api"
+    "typecheck": "npm run typecheck -w @dashboard/web && npm run typecheck -w @dashboard/admin && npm run typecheck -w @dashboard/api"
   },
   "engines": {
     "node": ">=22"
