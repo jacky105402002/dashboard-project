@@ -26,5 +26,5 @@ COPY --from=build /app/apps/api/dist apps/api/dist
 COPY --from=build /app/apps/api/prisma apps/api/prisma
 COPY --from=build /app/node_modules/.prisma node_modules/.prisma
 COPY --from=build /app/node_modules/@prisma node_modules/@prisma
-EXPOSE 3000
+EXPOSE 8080
 CMD ["npm", "run", "start", "-w", "@dashboard/api"]
