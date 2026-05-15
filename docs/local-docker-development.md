@@ -95,11 +95,30 @@ docker compose exec api npm run prisma:generate -w @dashboard/api
 docker compose exec api npm run prisma:seed -w @dashboard/api
 ```
 
+Run `prisma:push` again whenever `apps/api/prisma/schema.prisma` changes.
+
 After seeding, check:
 
 ```powershell
 Invoke-WebRequest -Uri http://localhost:3000/projects/public -UseBasicParsing
 ```
+
+## GitHub Commit Sync
+
+The admin app can sync recent GitHub commits into the project event history.
+
+1. Open the admin app at `http://localhost:5175`.
+2. Select a project.
+3. Make sure `GitHub URL` is a public GitHub repository URL, for example:
+
+```txt
+https://github.com/jacky105402002/dashboard-project
+```
+
+4. Click `Sync GitHub`.
+
+The API will call GitHub's public commits endpoint and store the latest commits in `ProjectEvent`.
+The public dashboard detail drawer then shows those events under `// HISTORY`.
 
 ## Zeabur Migration Path
 

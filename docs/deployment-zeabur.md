@@ -22,6 +22,11 @@ The API exposes:
 
 - `GET /health`
 - `GET /projects/public`
+- `GET /projects`
+- `POST /projects`
+- `PATCH /projects/:id`
+- `DELETE /projects/:id`
+- `POST /projects/:id/sync-github`
 - Swagger docs at `/docs`
 
 ## Database
@@ -36,6 +41,7 @@ Initial models:
 
 - `User`
 - `Project`
+- `ProjectEvent`
 
 Before production launch, run:
 

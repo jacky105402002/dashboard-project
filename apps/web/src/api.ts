@@ -18,6 +18,14 @@ type ApiProject = {
   lastUpdatedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  events?: Array<{
+    id: string;
+    source: string;
+    event: string;
+    note: string;
+    url: string | null;
+    occurredAt: string;
+  }>;
 };
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
@@ -57,7 +65,12 @@ function toProject(apiProject: ApiProject): Project {
     sortOrder: apiProject.sortOrder,
     lastUpdatedAt: formatDate(apiProject.lastUpdatedAt ?? apiProject.updatedAt),
     nextAction: fallback?.nextAction ?? (status === 'LIVE' ? 'Monitor signal health' : 'Review next build step'),
-    history: fallback?.history ?? [
+    history: apiProject.events?.length ? apiProject.events.map((event) => ({
+      date: formatDate(event.occurredAt),
+      event: event.event,
+      note: event.note,
+      url: event.url,
+    })) : fallback?.history ?? [
       {
         date: formatDate(apiProject.updatedAt),
         event: status,

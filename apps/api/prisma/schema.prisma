@@ -47,6 +47,23 @@ model Project {
   lastUpdatedAt DateTime?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  events        ProjectEvent[]
 
   @@index([isPublic, isFeatured, sortOrder])
+}
+
+model ProjectEvent {
+  id        String   @id @default(cuid())
+  projectId String
+  source    String   @default("manual")
+  event     String
+  note      String
+  url       String?
+  occurredAt DateTime
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, source, url])
+  @@index([projectId, occurredAt])
 }

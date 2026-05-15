@@ -323,7 +323,11 @@ function ProjectDetailDrawer({ project, onClose }: { project: Project; onClose: 
                 <div key={`${item.date}-${item.event}`}>
                   <strong>{item.date}</strong>
                   <span>{item.event}</span>
-                  <em>{item.note}</em>
+                  {item.url ? (
+                    <a href={item.url} target="_blank" rel="noreferrer">{item.note}</a>
+                  ) : (
+                    <em>{item.note}</em>
+                  )}
                 </div>
               ))}
             </div>

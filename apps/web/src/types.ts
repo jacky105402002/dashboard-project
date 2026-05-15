@@ -20,6 +20,7 @@ export type Project = {
     date: string;
     event: string;
     note: string;
+    url?: string | null;
   }>;
 };
 

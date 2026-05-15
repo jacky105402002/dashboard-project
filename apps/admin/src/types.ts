@@ -17,6 +17,14 @@ export type Project = {
   lastUpdatedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  events?: Array<{
+    id: string;
+    source: string;
+    event: string;
+    note: string;
+    url: string | null;
+    occurredAt: string;
+  }>;
 };
 
 export type ProjectPayload = Omit<Project, 'id' | 'createdAt' | 'updatedAt'>;

@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { Database, Plus, RefreshCw, Save, Trash2 } from 'lucide-react';
-import { createProject, deleteProject, getProjects, updateProject } from './api';
+import { Database, Github, Plus, RefreshCw, Save, Trash2 } from 'lucide-react';
+import { createProject, deleteProject, getProjects, syncGithubProject, updateProject } from './api';
 import type { Project, ProjectPayload, ProjectStatus } from './types';
 
 const statuses: ProjectStatus[] = ['PLANNING', 'BUILDING', 'LIVE', 'PAUSED', 'BLOCKED', 'ARCHIVED'];
@@ -151,6 +151,20 @@ export function App() {
     setMessage(`Deleted ${selectedProject.name}`);
   }
 
+  async function syncGithub() {
+    if (!selectedProject) return;
+    setIsSaving(true);
+    try {
+      const result = await syncGithubProject(selectedProject.id);
+      await loadProjects();
+      setMessage(`GitHub synced ${result.synced} commits from ${result.repo}`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'GitHub sync failed');
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
   return (
     <main className="admin-canvas">
       <header className="admin-strip">
@@ -211,10 +225,16 @@ export function App() {
             </div>
             <div className="editor-actions">
               {selectedProject && (
-                <button className="danger-button" onClick={removeProject} type="button">
-                  <Trash2 size={14} />
-                  Delete
-                </button>
+                <>
+                  <button className="ghost-button" disabled={isSaving || !form.githubUrl} onClick={syncGithub} type="button">
+                    <Github size={14} />
+                    Sync GitHub
+                  </button>
+                  <button className="danger-button" onClick={removeProject} type="button">
+                    <Trash2 size={14} />
+                    Delete
+                  </button>
+                </>
               )}
               <button className="primary-button" disabled={isSaving} type="submit">
                 <Save size={14} />
@@ -285,6 +305,19 @@ export function App() {
             </label>
             <span>Updated {selectedProject ? formatDate(selectedProject.updatedAt) : 'AFTER SAVE'}</span>
           </div>
+
+          {selectedProject?.events?.length ? (
+            <section className="events-panel">
+              <h3>GITHUB / EVENT HISTORY</h3>
+              {selectedProject.events.slice(0, 5).map((event) => (
+                <a href={event.url ?? '#'} key={event.id} target="_blank" rel="noreferrer">
+                  <strong>{formatDate(event.occurredAt)}</strong>
+                  <span>{event.event}</span>
+                  <em>{event.note}</em>
+                </a>
+              ))}
+            </section>
+          ) : null}
         </form>
       </section>
     </main>

@@ -42,3 +42,9 @@ export function deleteProject(id: string) {
     method: 'DELETE',
   });
 }
+
+export function syncGithubProject(id: string) {
+  return request<{ projectId: string; repo: string; synced: number }>(`/projects/${id}/sync-github`, {
+    method: 'POST',
+  });
+}
