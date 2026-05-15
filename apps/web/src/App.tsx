@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Activity,
   ExternalLink,
@@ -11,18 +11,19 @@ import {
 } from 'lucide-react';
 import {
   categoryFilters,
-  projects,
+  projects as fallbackProjects,
   statusFilters,
   statusTone,
   telemetry,
   timeline,
 } from './data';
+import { fetchPublicProjects } from './api';
 import type { Project, ProjectStatus } from './types';
 
 type StatusFilter = (typeof statusFilters)[number];
 type CategoryFilter = (typeof categoryFilters)[number];
 
-function statusCounts() {
+function statusCounts(projects: Project[]) {
   return statusFilters.reduce<Record<string, number>>((acc, status) => {
     acc[status] = status === 'ALL' ? projects.length : projects.filter((project) => project.status === status).length;
     return acc;
@@ -87,12 +88,14 @@ function CommandStrip({
 
 function StatusRail({
   activeStatus,
+  projects,
   onStatusChange,
 }: {
   activeStatus: StatusFilter;
+  projects: Project[];
   onStatusChange: (status: StatusFilter) => void;
 }) {
-  const counts = statusCounts();
+  const counts = statusCounts(projects);
   return (
     <aside className="status-rail" aria-label="Status filters">
       <p className="rail-heading">STATUS RAIL</p>
@@ -335,6 +338,28 @@ export function App() {
   const [activeStatus, setActiveStatus] = useState<StatusFilter>('ALL');
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('ALL');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+  const [dataSource, setDataSource] = useState<'api' | 'fallback' | 'loading'>('loading');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    fetchPublicProjects()
+      .then((apiProjects) => {
+        if (!isMounted) return;
+        setProjects(apiProjects.length > 0 ? apiProjects : fallbackProjects);
+        setDataSource(apiProjects.length > 0 ? 'api' : 'fallback');
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setProjects(fallbackProjects);
+        setDataSource('fallback');
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const visibleProjects = useMemo(() => {
     return projects
@@ -350,9 +375,12 @@ export function App() {
       <CommandStrip missionCount={projects.length} activeSummary={activeSummary} />
 
       <div className="dashboard-shell">
-        <StatusRail activeStatus={activeStatus} onStatusChange={setActiveStatus} />
+        <StatusRail activeStatus={activeStatus} projects={projects} onStatusChange={setActiveStatus} />
 
         <section className="mission-column">
+          <div className={`data-source data-source-${dataSource}`}>
+            DATA SOURCE / {dataSource === 'api' ? 'POSTGRES API' : dataSource === 'loading' ? 'ACQUIRING SIGNAL' : 'LOCAL FALLBACK'}
+          </div>
           <QuantumReadouts visibleProjects={visibleProjects} />
           <div className="mission-heading">
             <div>
