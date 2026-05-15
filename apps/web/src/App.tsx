@@ -338,7 +338,7 @@ export function App() {
   const [activeStatus, setActiveStatus] = useState<StatusFilter>('ALL');
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('ALL');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [dataSource, setDataSource] = useState<'api' | 'fallback' | 'loading'>('loading');
 
   useEffect(() => {
@@ -362,11 +362,11 @@ export function App() {
   }, []);
 
   const visibleProjects = useMemo(() => {
-    return projects
+    return [...projects]
       .filter((project) => activeStatus === 'ALL' || project.status === activeStatus)
       .filter((project) => activeCategory === 'ALL' || project.category === activeCategory)
       .sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured) || a.sortOrder - b.sortOrder);
-  }, [activeCategory, activeStatus]);
+  }, [activeCategory, activeStatus, projects]);
 
   const activeSummary = `${activeStatus} / ${activeCategory} / ${visibleProjects.length} PROJECTS`;
 
