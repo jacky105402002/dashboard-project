@@ -1,9 +1,10 @@
-import type { Project, ProjectPayload } from './types';
+import type { AuthPayload, AuthUser, Project, ProjectPayload, RegisterPayload } from './types';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       ...init?.headers,
@@ -17,6 +18,34 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
 
   return response.json() as Promise<T>;
+}
+
+export function getSetupStatus() {
+  return request<{ hasAdmin: boolean }>('/auth/setup-status');
+}
+
+export function getCurrentUser() {
+  return request<AuthUser>('/auth/me');
+}
+
+export function login(payload: AuthPayload) {
+  return request<AuthUser>('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export function register(payload: RegisterPayload) {
+  return request<AuthUser>('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export function logout() {
+  return request<{ ok: true }>('/auth/logout', {
+    method: 'POST',
+  });
 }
 
 export function getProjects() {

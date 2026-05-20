@@ -28,3 +28,19 @@ export type Project = {
 };
 
 export type ProjectPayload = Omit<Project, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type AuthUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: 'ADMIN';
+};
+
+export type AuthPayload = {
+  email: string;
+  password: string;
+};
+
+export type RegisterPayload = AuthPayload & {
+  name: string;
+};

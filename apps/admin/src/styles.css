@@ -272,6 +272,39 @@ input:focus, textarea:focus, select:focus {
   white-space: nowrap;
 }
 
+.auth-canvas {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 20px;
+}
+
+.auth-panel {
+  width: min(460px, 100%);
+  border: 1px solid var(--border);
+  background: rgba(7, 17, 34, .94);
+  box-shadow: 0 0 28px rgba(0,245,255,.16);
+  clip-path: var(--clip-panel);
+}
+
+.auth-brand {
+  width: 100%;
+  min-width: 0;
+  padding: 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,42,74,.36);
+}
+
+.auth-form {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.auth-form .primary-button {
+  min-height: 40px;
+}
+
 @media (max-width: 980px) {
   .admin-strip, .admin-grid { grid-template-columns: 1fr; }
   .admin-strip { align-items: flex-start; flex-direction: column; }

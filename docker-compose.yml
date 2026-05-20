@@ -28,6 +28,9 @@ services:
       DATABASE_URL: postgresql://dashboard:dashboard@db:5432/dashboard_dev?schema=public
       PORT: 3000
       CORS_ORIGIN: http://localhost:5173,http://localhost:5174,http://localhost:5175
+      JWT_SECRET: local-dev-only-change-in-production
+      COOKIE_SECURE: false
+      COOKIE_SAME_SITE: lax
     ports:
       - "3000:3000"
     volumes:

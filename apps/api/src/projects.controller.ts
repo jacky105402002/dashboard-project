@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AdminAuthGuard } from './auth/auth.guard';
 import { GithubSyncService } from './github-sync.service';
 import { ProjectDto, UpdateProjectDto } from './project.dto';
 import { PrismaService } from './prisma.service';
@@ -13,6 +14,7 @@ export class ProjectsController {
   ) {}
 
   @Get()
+  @UseGuards(AdminAuthGuard)
   @ApiOkResponse({ description: 'All project records for the admin console.' })
   async getProjects() {
     return this.prisma.project.findMany({
@@ -52,6 +54,7 @@ export class ProjectsController {
   }
 
   @Post()
+  @UseGuards(AdminAuthGuard)
   @ApiCreatedResponse({ description: 'Create a project record.' })
   async createProject(@Body() dto: ProjectDto) {
     return this.prisma.project.create({
@@ -63,6 +66,7 @@ export class ProjectsController {
   }
 
   @Patch(':id')
+  @UseGuards(AdminAuthGuard)
   @ApiOkResponse({ description: 'Update a project record.' })
   async updateProject(@Param('id') id: string, @Body() dto: UpdateProjectDto) {
     await this.ensureProjectExists(id);
@@ -77,6 +81,7 @@ export class ProjectsController {
   }
 
   @Delete(':id')
+  @UseGuards(AdminAuthGuard)
   @ApiOkResponse({ description: 'Delete a project record.' })
   async deleteProject(@Param('id') id: string) {
     await this.ensureProjectExists(id);
@@ -86,6 +91,7 @@ export class ProjectsController {
   }
 
   @Post(':id/sync-github')
+  @UseGuards(AdminAuthGuard)
   @ApiOkResponse({ description: 'Sync latest GitHub commits into project events.' })
   async syncGithub(@Param('id') id: string) {
     return this.githubSync.syncProjectCommits(id);

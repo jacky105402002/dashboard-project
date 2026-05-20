@@ -1,7 +1,18 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { Database, Github, Plus, RefreshCw, Save, Trash2 } from 'lucide-react';
-import { createProject, deleteProject, getProjects, syncGithubProject, updateProject } from './api';
-import type { Project, ProjectPayload, ProjectStatus } from './types';
+import { Database, Github, LogOut, Plus, RefreshCw, Save, ShieldCheck, Trash2 } from 'lucide-react';
+import {
+  createProject,
+  deleteProject,
+  getCurrentUser,
+  getProjects,
+  getSetupStatus,
+  login,
+  logout,
+  register,
+  syncGithubProject,
+  updateProject,
+} from './api';
+import type { AuthPayload, AuthUser, Project, ProjectPayload, ProjectStatus, RegisterPayload } from './types';
 
 const statuses: ProjectStatus[] = ['PLANNING', 'BUILDING', 'LIVE', 'PAUSED', 'BLOCKED', 'ARCHIVED'];
 
@@ -59,7 +70,82 @@ function formatDate(value: string | null) {
   return value ? value.slice(0, 10) : 'UNSET';
 }
 
+type AuthMode = 'loading' | 'login' | 'register' | 'ready';
+
+function AuthPanel({
+  mode,
+  message,
+  onLogin,
+  onRegister,
+}: {
+  mode: Exclude<AuthMode, 'loading' | 'ready'>;
+  message: string;
+  onLogin: (payload: AuthPayload) => Promise<void>;
+  onRegister: (payload: RegisterPayload) => Promise<void>;
+}) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const isRegister = mode === 'register';
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsSubmitting(true);
+    try {
+      if (isRegister) {
+        await onRegister({ name, email, password });
+      } else {
+        await onLogin({ email, password });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <main className="admin-canvas auth-canvas">
+      <section className="auth-panel">
+        <div className="brand auth-brand">
+          <ShieldCheck size={28} />
+          <div>
+            <h1>{isRegister ? 'INIT ADMIN ACCESS' : 'ADMIN ACCESS'}</h1>
+            <p>{message}</p>
+          </div>
+        </div>
+        <form className="auth-form" onSubmit={submit}>
+          {isRegister && (
+            <label>
+              Name
+              <input value={name} onChange={(event) => setName(event.target.value)} required />
+            </label>
+          )}
+          <label>
+            Email
+            <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+          </label>
+          <label>
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              minLength={isRegister ? 12 : 1}
+              required
+            />
+          </label>
+          <button className="primary-button" disabled={isSubmitting} type="submit">
+            {isSubmitting ? 'Authorizing' : isRegister ? 'Create Admin' : 'Login'}
+          </button>
+        </form>
+      </section>
+    </main>
+  );
+}
+
 export function App() {
+  const [authMode, setAuthMode] = useState<AuthMode>('loading');
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [form, setForm] = useState<ProjectPayload>(emptyProject);
@@ -92,9 +178,64 @@ export function App() {
   }
 
   useEffect(() => {
-    loadProjects().catch((error) => setMessage(`Signal lost: ${error.message}`));
+    async function boot() {
+      const setup = await getSetupStatus();
+      if (!setup.hasAdmin) {
+        setMessage('Create the first admin account');
+        setAuthMode('register');
+        return;
+      }
+
+      try {
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+        setAuthMode('ready');
+        await loadProjects();
+      } catch {
+        setMessage('Authentication required');
+        setAuthMode('login');
+      }
+    }
+
+    boot().catch((error) => {
+      setMessage(`Signal lost: ${error.message}`);
+      setAuthMode('login');
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  async function handleLogin(payload: AuthPayload) {
+    try {
+      const authenticatedUser = await login(payload);
+      setUser(authenticatedUser);
+      setAuthMode('ready');
+      await loadProjects();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Login failed');
+    }
+  }
+
+  async function handleRegister(payload: RegisterPayload) {
+    try {
+      const authenticatedUser = await register(payload);
+      setUser(authenticatedUser);
+      setAuthMode('ready');
+      await loadProjects();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Registration failed');
+    }
+  }
+
+  async function handleLogout() {
+    await logout();
+    setUser(null);
+    setProjects([]);
+    setSelectedId(null);
+    setForm(emptyProject);
+    setTechStackInput('');
+    setMessage('Authentication required');
+    setAuthMode('login');
+  }
 
   function selectProject(project: Project) {
     setSelectedId(project.id);
@@ -165,6 +306,26 @@ export function App() {
     }
   }
 
+  if (authMode === 'loading') {
+    return (
+      <main className="admin-canvas auth-canvas">
+        <section className="auth-panel">
+          <div className="brand auth-brand">
+            <ShieldCheck size={28} />
+            <div>
+              <h1>XENON GRID ADMIN</h1>
+              <p>{message}</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (authMode === 'login' || authMode === 'register') {
+    return <AuthPanel mode={authMode} message={message} onLogin={handleLogin} onRegister={handleRegister} />;
+  }
+
   return (
     <main className="admin-canvas">
       <header className="admin-strip">
@@ -176,11 +337,16 @@ export function App() {
           </div>
         </div>
         <div className="strip-metrics">
+          <span>ADMIN <strong>{user?.name ?? 'ACTIVE'}</strong></span>
           <span>TOTAL <strong>{stats.total}</strong></span>
           <span>PUBLIC <strong>{stats.public}</strong></span>
           <span>LIVE <strong>{stats.live}</strong></span>
           <span>BLOCKED <strong>{stats.blocked}</strong></span>
         </div>
+        <button className="ghost-button" onClick={handleLogout} type="button">
+          <LogOut size={14} />
+          Logout
+        </button>
         <button className="ghost-button" onClick={() => loadProjects()} type="button">
           <RefreshCw size={14} />
           Sync
